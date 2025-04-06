@@ -86,10 +86,12 @@ button:focus-visible {
     background-color: rgb(255, 0, 0);
     color: white;
   }
+
   50% {
     background-color: rgba(255, 0, 0, 0.474);
     color: #00576a;
   }
+
   100% {
     background-color: red;
     color: white;
