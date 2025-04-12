@@ -16,12 +16,14 @@
     cursor: pointer;
 }
 
+
 .back-container {
     background-color: #228B22;
     height: 50vh;
 }
 
 .back-container header {
+    z-index: 3;
     position: relative;
     width: 100%;
     background-color: #228B22;
@@ -43,6 +45,7 @@
     width: 155px;
     height: 100px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .connextion-btn {
@@ -74,7 +77,7 @@
     margin: 2rem auto;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.253);
     background-color: white;
 }
 
@@ -88,6 +91,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 0;
 }
 
 .form-title {
@@ -146,7 +150,7 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.4s;
 }
 
 .google-sign:hover {
