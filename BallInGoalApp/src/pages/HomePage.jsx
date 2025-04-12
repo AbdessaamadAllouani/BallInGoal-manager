@@ -54,7 +54,7 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <div className="homePage">
+      <div className="container">
         <div className="news">
           <h2>📰 Actualités du jour</h2>
           <div className="newsInfo">
@@ -136,7 +136,7 @@ const HomePage = () => {
         </div>
         <div className="live">
           <h2>⚽ Match en cours</h2>
-          <div>
+          <div className="allMatch">
             <div className="containerLiveMatch">
               <h3>premier league</h3>
               <div className="liveMatch">
@@ -562,7 +562,7 @@ const HomePage = () => {
         </div>
         <div className="live">
           <h2>⚽ Matchs de ce mois </h2>
-          <div>
+          <div className="allMatch">
             <div className="containerLiveMatch">
               <h3>premier league</h3>
               <div className="liveMatch">

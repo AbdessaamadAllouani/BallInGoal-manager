@@ -21,14 +21,14 @@ const Header = () => {
   return (
     <header className="header">
       <nav>
-        <img style={{width:"20px",}} src={listicon} alt="" />
+        <img style={{ width: "20px" }} src={listicon} alt="" />
         <img src={logoBallInGool} alt="logo" />
         <div className="princpalLink">
           <Link to={"/"}>
             {" "}
             <FontAwesomeIcon icon={faHouse} /> Accueil
           </Link>
-          <Link to={"/D"}>
+          <Link to={"/Diffusion"}>
             {" "}
             <FontAwesomeIcon icon={faVideo} /> Diffusion en direct
           </Link>
@@ -52,7 +52,7 @@ const Header = () => {
         </div>
       </nav>
       <div className="searchBar">
-        <span >
+        <span>
           <FontAwesomeIcon className="search" icon={faSearch} />
           <input type="text" placeholder="recherche..." />
         </span>

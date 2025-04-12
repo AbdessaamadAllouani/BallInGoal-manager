@@ -26,6 +26,7 @@
 #root {
   max-width: 100%;
   width: 100dvw;
+  height: 100vh;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -162,7 +163,7 @@ header .searchBar div a:hover {
 
 /* continu de la page home */
 
-.homePage {
+.container {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -173,11 +174,11 @@ header .searchBar div a:hover {
   position: relative;
 }
 
-.homePage .news,
-.homePage .live,
-.homePage .shopping,
-.homePage .statistics,
-.homePage .clubs {
+.container .news,
+.container .live,
+.container .shopping,
+.container .statistics,
+.container .clubs {
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -187,11 +188,11 @@ header .searchBar div a:hover {
   border-radius: 14px;
 }
 
-.homePage .news .newsInfo,
-.homePage .live > div,
-.homePage .shopping .containerShopping,
-.homePage .statistics .statisticsInfo,
-.homePage .clubs .containerClubs {
+.container .news .newsInfo,
+.container .live .allMatch,
+.container .shopping .containerShopping,
+.container .statistics .statisticsInfo,
+.container .clubs .containerClubs {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -206,8 +207,8 @@ header .searchBar div a:hover {
     display: none;
   }
 }
-.homePage .news .newsInfo > div,
-.homePage .shopping .containerShopping .shoppingArtecl {
+.container .news .newsInfo > div,
+.container .shopping .containerShopping .shoppingArtecl {
   display: flex;
   gap: 0.2rem;
   flex-direction: column;
@@ -215,12 +216,12 @@ header .searchBar div a:hover {
   padding: 0.5rem 0.5rem;
 }
 
-.homePage .news .newsInfo > div:hover {
+.container .news .newsInfo > div:hover {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease-in-out;
   transform: scale(1.02);
 }
-.homePage .news .newsInfo > div p {
+.container .news .newsInfo > div p {
   font-size: 14px;
   font-weight: 300;
   color: #979494;
@@ -232,7 +233,7 @@ header .searchBar div a:hover {
   margin-top: 0.4rem;
 }
 
-.homePage .news .newsInfo > div h3 {
+.container .news .newsInfo > div h3 {
   font-size: 16px;
   font-weight: bold;
   color: #00576a;
@@ -244,7 +245,7 @@ header .searchBar div a:hover {
   margin-top: 0.4rem;
 }
 
-.homePage .news .newsInfo > div h5 {
+.container .news .newsInfo > div h5 {
   font-size: 12px;
   font-weight: bold;
   color: #228b22;
@@ -256,13 +257,13 @@ header .searchBar div a:hover {
   margin-top: 0.4rem;
 }
 
-.homePage h2 {
+.container h2 {
   font-size: 20px;
   font-weight: bold;
   text-align: left;
   color: #228b22;
 }
-.homePage .news .newsimg {
+.container .news .newsimg {
   overflow: hidden;
   position: relative;
   width: 244px;
@@ -270,14 +271,14 @@ header .searchBar div a:hover {
   border-radius: 16px;
 }
 
-.homePage .news .newsimg img {
+.container .news .newsimg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 /* ////////////////////////////////////// */
 
-.homePage .live .containerLiveMatch {
+.container .live .containerLiveMatch {
   display: flex;
   position: relative;
   flex-direction: column;
@@ -290,7 +291,7 @@ header .searchBar div a:hover {
   overflow: hidden;
 }
 
-.homePage .live .containerLiveMatch:hover {
+.container .live .containerLiveMatch:hover {
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
   transition: all 0.3s ease-in-out;
   transform: scale(1.02);
@@ -300,7 +301,7 @@ header .searchBar div a:hover {
   position: relative;
 }
 
-.homePage .live .containerLiveMatch:hover::after {
+.container .live .containerLiveMatch:hover::after {
   content: "regarder maintenant";
   display: flex;
   justify-content: left;
@@ -318,20 +319,20 @@ header .searchBar div a:hover {
   left: 0;
   z-index: 1;
 }
-.homePage .live .containerLiveMatch h2 {
+.container .live .containerLiveMatch h2 {
   font-size: 20px;
   font-weight: bold;
   text-align: left;
   color: #228b22;
 }
 
-.homePage .live .containerLiveMatch h3 {
+.container .live .containerLiveMatch h3 {
   font-size: 17px;
   font-weight: 600;
   text-align: left;
   color: #007565;
 }
-.homePage .live .containerLiveMatch .liveMatch .liveImg {
+.container .live .containerLiveMatch .liveMatch .liveImg {
   overflow: hidden;
   position: relative;
   width: 32px;
@@ -339,13 +340,13 @@ header .searchBar div a:hover {
   border-radius: 50%;
   /* background-color: #060606; */
 }
-.homePage .live .containerLiveMatch .liveMatch .liveImg img {
+.container .live .containerLiveMatch .liveMatch .liveImg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 16px;
 }
-.homePage .live .containerLiveMatch .liveMatch .vs {
+.container .live .containerLiveMatch .liveMatch .vs {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -353,7 +354,7 @@ header .searchBar div a:hover {
   gap: 0.5rem;
 }
 
-.homePage .live .containerLiveMatch .liveMatch .vs {
+.container .live .containerLiveMatch .liveMatch .vs {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -361,7 +362,7 @@ header .searchBar div a:hover {
   gap: 0.5rem;
 }
 
-.homePage .live .containerLiveMatch .liveMatch > div {
+.container .live .containerLiveMatch .liveMatch > div {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -370,7 +371,7 @@ header .searchBar div a:hover {
   color: #00576a;
 }
 
-.homePage .live .containerLiveMatch .liveMatch .vs .animationcolor {
+.container .live .containerLiveMatch .liveMatch .vs .animationcolor {
   background-color: red;
   width: 5rem;
   padding: 0.2rem 0.6rem;
@@ -380,7 +381,7 @@ header .searchBar div a:hover {
   color: white;
 }
 
-.homePage .live .containerLiveMatch .liveMatch .vs span {
+.container .live .containerLiveMatch .liveMatch .vs span {
   background-color: rgba(34, 139, 34, 0.111);
   width: 5rem;
   padding: 0.2rem 0.6rem;
@@ -389,7 +390,7 @@ header .searchBar div a:hover {
   color: #00576a;
 }
 
-.homePage .live .separator {
+.container .live .separator {
   width: 0.5px;
   height: 97%;
   padding: 0;
@@ -398,18 +399,18 @@ header .searchBar div a:hover {
 
 /* /////////////////////////////////////////// */
 
-.homePage .shopping .sommer,
-.homePage .statistics .filter {
+.container .shopping .sommer,
+.container .statistics .filter {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0.5rem 0.5rem;
 }
 
-.homePage .shopping .sommer h2 {
+.container .shopping .sommer h2 {
   width: fit-content;
 }
-.homePage .shopping .sommer button {
+.container .shopping .sommer button {
   width: fit-content;
   background-color: transparent;
   margin: 1px;
@@ -418,7 +419,7 @@ header .searchBar div a:hover {
   border: solid 2px transparent;
 }
 
-.homePage .shopping .sommer button:hover {
+.container .shopping .sommer button:hover {
   color: #00576a;
   border: solid 2px #00576a;
   padding: 0.2rem 0.5rem;
@@ -471,7 +472,7 @@ header .searchBar div a:hover {
   text-overflow: ellipsis;
 }
 
-.homePage .shopping .containerShopping {
+.container .shopping .containerShopping {
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth; /* pour un défilement doux */
@@ -495,14 +496,14 @@ header .searchBar div a:hover {
 
 
 
-.homePage .statistics .filter select {
+.container .statistics .filter select {
   border: none;
   outline: none;
   background-color: white;
   font-size: 16px;
   font-weight: medium;
 }
-.homePage .statistics .filter select option {
+.container .statistics .filter select option {
   background-color: white;
   border: none;
   color: #00576a;
@@ -510,7 +511,7 @@ header .searchBar div a:hover {
   font-weight: 300;
 }
 
-.homePage .statistics .filter > div {
+.container .statistics .filter > div {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -520,27 +521,27 @@ header .searchBar div a:hover {
   color: #00576a;
 }
 
-.homePage .statistics .filter > div > div {
+.container .statistics .filter > div > div {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   overflow: hidden;
 }
-.homePage .statistics .filter > div > div img {
+.container .statistics .filter > div > div img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
 }
 
-.homePage .statistics .statisticsInfo table {
+.container .statistics .statisticsInfo table {
   width: 1000px;
   height: 467px;
   border-collapse: separate;
   border-spacing: 0 8px;
 }
 
-.homePage .statistics .statisticsInfo table thead th {
+.container .statistics .statisticsInfo table thead th {
   color: #636363;
   font-size: 16px;
   font-weight: lighter;
@@ -548,7 +549,7 @@ header .searchBar div a:hover {
   padding: 8px 20px;
 }
 
-.homePage .statistics .statisticsInfo table tbody tr {
+.container .statistics .statisticsInfo table tbody tr {
   padding: 1rem 0.5rem;
   font-size: 16px;
   font-weight: medium;
@@ -562,7 +563,7 @@ header .searchBar div a:hover {
   border-radius: 16px;
 
 }
-.homePage .statistics .statisticsInfo table tbody tr:hover {
+.container .statistics .statisticsInfo table tbody tr:hover {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
   border-radius: 16px;
   transition: all 0.3s ease-in-out;
@@ -570,7 +571,7 @@ header .searchBar div a:hover {
 }
 
 
-.homePage .statistics .statisticsInfo table tbody td {
+.container .statistics .statisticsInfo table tbody td {
   padding: 16px 20px;
   max-width: 1000px;
   max-height: 64px;
@@ -581,7 +582,7 @@ header .searchBar div a:hover {
 }
 
 
-.homePage .statistics .statisticsInfo table tbody td > div {
+.container .statistics .statisticsInfo table tbody td > div {
   display: flex;
   justify-content: left;
   align-items: center;
@@ -590,18 +591,18 @@ header .searchBar div a:hover {
   font-weight: medium;
 }
 
-.homePage .statistics .statisticsInfo tbody td:first-child {
+.container .statistics .statisticsInfo tbody td:first-child {
   border-top-left-radius: 16px;
   border-bottom-left-radius: 16px;
 }
 
 /* Bord arrondi à droite (dernière cellule) */
-.homePage .statistics .statisticsInfo tbody td:last-child {
+.container .statistics .statisticsInfo tbody td:last-child {
   border-top-right-radius: 16px;
   border-bottom-right-radius: 16px;
 }
 
-.homePage .statistics .statisticsInfo tbody .imgStatDiv {
+.container .statistics .statisticsInfo tbody .imgStatDiv {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -613,7 +614,7 @@ header .searchBar div a:hover {
   padding: 0.2rem 0.2rem;
   position: relative;
 }
-.homePage .statistics .statisticsInfo tbody .imgStatDiv img {
+.container .statistics .statisticsInfo tbody .imgStatDiv img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -622,7 +623,7 @@ header .searchBar div a:hover {
 
 /* ////////////////////////////////////////////////////////////////////// */
 
-.homePage .clubs .containerClubs .clubsInfo > div {
+.container .clubs .containerClubs .clubsInfo > div {
   display: flex;
   width: 124px;
   height: 124px;
@@ -632,13 +633,13 @@ header .searchBar div a:hover {
   justify-content: center;
   align-items: center;
 }
-.homePage .clubs .containerClubs .clubsInfo > div img {
+.container .clubs .containerClubs .clubsInfo > div img {
   width: 63px;
   height: 64px;
   object-fit: cover;
   /* border-radius: 50%; */
 }
-.homePage .clubs .containerClubs .clubsInfo h3 {
+.container .clubs .containerClubs .clubsInfo h3 {
   font-size: 16px;
   font-weight: medium;
   color: #00576a;
