@@ -13,8 +13,8 @@ import {
   faSearch,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import logoBallInGool from "../assets/logoGoolInBall.png";
-import listicon from "../assets/listIcon.png";
+import logoBallInGool from "../../assets/images/logoGoolInBall.png";
+import listicon from "../../assets/images/listIcon.png";
 
 import { Link } from "react-router-dom";
 const Header = () => {
@@ -45,10 +45,10 @@ const Header = () => {
           <FontAwesomeIcon icon={faBell} />
           <FontAwesomeIcon icon={faCircleInfo} />
           <FontAwesomeIcon icon={faHeadset} />
-          <Link to={"/df"} className="connexion">
+          <Link to={"/"} className="connexion">
             connexion
           </Link>
-          <Link to={"/HG"}>inscription</Link>
+          <Link to={"/Inscription"}>inscription</Link>
         </div>
       </nav>
       <div className="searchBar">

@@ -103,7 +103,9 @@ button:focus-visible {
 .text-purple {
   color: #5742a9;
 }
-
+a{
+  text-decoration: none;
+}
 /* Hover effects */
 .card-hover-effect:hover {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);

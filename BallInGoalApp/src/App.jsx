@@ -4,7 +4,8 @@
 import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import './App.css'
 import HomePage from "./pages/HomePage"
-import LivePage from "./pages/LivePage"
+import LivePage from "./pages/livePage/LivePage"
+import SignUp from "./pages/signUp/SignUp"
 function App() {
 
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/Diffusion" element={<LivePage />} />
+          <Route path="/Inscription" element={<SignUp />} />
         </Routes>
       </BrowserRouter>
     </>

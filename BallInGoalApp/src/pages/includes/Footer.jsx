@@ -1,11 +1,11 @@
 import React from "react";
-import logoGoolInBall from "../assets/logoGoolInBall.png";
+import logoGoolInBall from "../../assets/images/logoGoolInBall.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import linkedin_icon from "../assets/linkedin_icon.png";
-import facebook_icon from '../assets/facebook_icon.png';
-import instagram_icon from "../assets/instagram_icon.png";
-import youtube_icon from '../assets/youtube_icon.png'
-import twitter_icon from "../assets/twitter_icon.png"
+import linkedin_icon from "../../assets/images/linkedin_icon.png";
+import facebook_icon from '../../assets/images/facebook_icon.png';
+import instagram_icon from "../../assets/images/instagram_icon.png";
+import youtube_icon from '../../assets/images/youtube_icon.png'
+import twitter_icon from "../../assets/images/twitter_icon.png"
 const Footer = () => {
   return (
     <footer className="footer">

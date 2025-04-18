@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "./Header";
-import espanLogo from "../assets/espanLogo.webp";
-import "./LivePageStyle.css";
+import Header from "../includes/Header";
+import espanLogo from "../../assets/images/espanLogo.webp";
+import "../livePage/LivePageStyle.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faMicrophone } from "@fortawesome/free-solid-svg-icons";
