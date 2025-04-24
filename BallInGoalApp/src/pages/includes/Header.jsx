@@ -37,7 +37,7 @@ const Header = () => {
             <FontAwesomeIcon icon={faChartBar} />
             Classement & Statistique
           </Link>
-          <Link to={"/N"}>
+          <Link to={"/news"}>
             <FontAwesomeIcon icon={faNewspaper} /> Nouvelles
           </Link>
         </div>

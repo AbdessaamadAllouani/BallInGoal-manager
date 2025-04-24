@@ -1,7 +1,9 @@
-import React from "react";
 // import { useState } from "react";
+
 // import { useEffect } from "react";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import Header from "./includes/Header";
 import Footer from "./includes/Footer";
 import { BrowserRouter } from "react-router-dom";
@@ -34,9 +36,25 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-
 const HomePage = () => {
+  const [news, setNews] = useState([]);
+  const [error, seterror] = useState(null);
+  
+  useEffect(() => { 
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get(
+                    "http://127.0.0.1:8000/api/news"
+                );
+
+        setNews(response.data);
+      } catch (err) {
+        seterror(err.message);
+      }
+    };
+    fetchNews();
+  }, []);
+
   const shoppingContainerRef = useRef(null);
 
   const scroll = (direction) => {
@@ -58,7 +76,21 @@ const HomePage = () => {
         <div className="news">
           <h2>📰 Actualités du jour</h2>
           <div className="newsInfo">
-            <div>
+            {error && <p>{error}</p>}
+            {news.map((item) => (
+              <div key={item.id}>
+                <Link to={`/news/${item.id}`} key={item.id}>
+                  <div className="newsimg">
+                    <img src={item.image} alt="" />
+                  </div>
+
+                  <h5>{item.source}</h5>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </Link>
+              </div>
+            ))}
+            {/* <div>
               <div className="newsimg">
                 <img src={newsimg} alt="" />
               </div>
@@ -131,7 +163,7 @@ const HomePage = () => {
                 omnis deleniti, porro sit aperiam, ipsam molestiae maiores
                 accusamus magnam, voluptatibus quod provident!
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="live">
