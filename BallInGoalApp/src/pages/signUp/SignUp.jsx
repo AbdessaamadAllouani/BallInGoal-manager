@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/whiteLogo.png'
 import { Link } from 'react-router-dom';
-
 import glogo from '../../assets/images/g-logo.png';
 import './signUp.css';
 import SignIn from '../SignIn/SignIn';
-
 export default function SignUp() {
     const [validate, setValidate] = useState({ form: true, anim: false })
     return (
@@ -14,18 +12,13 @@ export default function SignUp() {
             <div className='back-container'>
                 <header>
                     <div className='container-img'>
-                        <img
-                            className='logo'
-                            src={logo}
-                            alt="logo"
-                        />
+                        <img src={logo} className='logo' alt="logo" />
                     </div>
                     {validate.form ? (
                         <button className='btn-connexion' onClick={() => setValidate({ form: false, anim: true })}>Connexion</button>
                     ) : (
                         <button className='btn-connexion' onClick={() => setValidate({ form: true, anim: false })}>inscrire</button>
                     )
-
                     }
 
                 </header>
