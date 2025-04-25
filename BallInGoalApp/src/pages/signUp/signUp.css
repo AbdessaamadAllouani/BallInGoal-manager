@@ -1,9 +1,3 @@
-.signup-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -19,7 +13,7 @@
     margin: 1rem;
     object-fit: cover;
     justify-content: left;
-    /* background-color: #333; */
+    cursor: pointer;
 }
 
 .back-container {
@@ -37,9 +31,10 @@
     padding: 0.5rem 1rem;
     height: 5rem;
     overflow: hidden;
+    z-index: 2;
 }
 
-.back-container header .contener-img {
+.signup-container .back-container header .container-img {
     position: relative;
     display: flex;
     justify-content: center;
@@ -50,20 +45,27 @@
     overflow: hidden;
 }
 
-.btn-connexion {
+.connextion-btn {
     right: 0;
     background-color: transparent;
     color: white;
-    border: 2px solid white;
+    border: 2px solid, white;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    /* cursor: pointer; */
+    cursor: pointer;
     margin: 1rem;
+    transition: 0.4s;
 }
 
-.btn-connexion:hover {
-    background-color: rgba(255, 255, 255, 0.555);
+
+.connextion-btn:hover {
+    background-color: #00576A;
+    border: 2px solid transparent;
 }
+
+/* .connexion-btn:hover {
+    background-color: rgba(255, 255, 255, 0.555);
+} */
 
 .form-container {
     position: absolute;
@@ -79,6 +81,7 @@
 .center-container {
     width: 100vw;
     height: 100vh;
+    z-index: 0;
     position: absolute;
     top: 0;
     left: 0;
@@ -120,15 +123,18 @@
 .btns button {
     background-color: #00576A;
     color: white;
-    border: none;
+    border: 2px solid transparent;
     padding: 0.8rem;
     border-radius: 4px;
     font-size: 1rem;
     cursor: pointer;
+    transition: 0.4s;
 }
 
 .btns button:hover {
-    background-color: #1e7a1e;
+    background-color: transparent;
+    color: black;
+    border: 2px solid #00576A;
 }
 
 .google-sign {
@@ -140,10 +146,14 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .google-sign:hover {
-    background-color: #f5f5f5;
+    background: #F8F9FA;
+    border-color: #C4C7CC;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
 }
 
 .glogo {

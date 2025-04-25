@@ -8,18 +8,15 @@ export default function SignUp() {
         <div className='signup-container'>
             <div className='back-container'>
                 <header>
-                    <div className='contener-img'>
-                    <img
-                        className='logo'
-                        src={logo}
-                        alt="logo"
-                        style={{ pointerEvents: 'none' }}
-                    />
+                    <div className='container-img'>
+                        <img
+                            className='logo'
+                            src={logo}
+                            alt="logo"
+                        />
                     </div>
-                    <button className='btn-connexion'>Connexion</button>
-                    
+                    <button className='connextion-btn'>Connexion</button>
                 </header>
-                
             </div>
             <div className='center-container'>
                 <div className='form-container'>
