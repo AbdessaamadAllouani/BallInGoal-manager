@@ -14,7 +14,7 @@ import {
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import logoBallInGool from "../../assets/images/logoGoolInBall.png";
-import listicon from "../../assets/images/listIcon.png";
+import listicon from "../../assets/images/listicon.png";
 
 import { Link } from "react-router-dom";
 const Header = () => {
@@ -45,10 +45,10 @@ const Header = () => {
           <FontAwesomeIcon icon={faBell} />
           <FontAwesomeIcon icon={faCircleInfo} />
           <FontAwesomeIcon icon={faHeadset} />
-          <Link to={"/"} className="connexion">
-            connexion
+          <Link to={"/df"} className="connexion">
+            Connexion
           </Link>
-          <Link to={"/Inscription"}>inscription</Link>
+          <Link to={"/Inscription"} className="inscription">Inscription</Link>
         </div>
       </nav>
       <div className="searchBar">

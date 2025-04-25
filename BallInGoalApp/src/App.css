@@ -5,24 +5,25 @@
   font-family: "Inter", sans-serif;
 }
 
-@media screen {
-  
-}
+@media screen {}
 
 @keyframes animationcolor {
   0% {
     background-color: rgb(255, 0, 0);
     color: white;
   }
+
   50% {
     background-color: rgba(255, 0, 0, 0.474);
     color: #00576a;
   }
+
   100% {
     background-color: red;
     color: white;
   }
 }
+
 #root {
   max-width: 100%;
   width: 100dvw;
@@ -74,15 +75,28 @@ header nav .helpIcon {
 header nav .helpIcon a {
   border: #00576a solid 2px;
   color: white;
-  border-radius: 5px;
-  padding: 0.1rem 0.25rem;
+  border-radius: 10px;
+  padding: 0.3rem 0.75rem;
   font-size: 14px;
   font-weight: 600;
   background-color: #00576a;
+  transition: 0.4s;
 }
 
 header nav .helpIcon .connexion {
   background-color: white;
+  color: #00576a;
+}
+
+header nav .helpIcon .connexion:hover {
+  background-color: #00576a;
+  color: white;
+  border: 2px solid #00576a;
+}
+
+header nav .helpIcon .inscription:hover {
+  background-color: white;
+  border: 2px solid #00576a;
   color: #00576a;
 }
 
@@ -103,6 +117,7 @@ header nav .princpalLink a:focus {
 header nav img {
   width: 9.5rem;
 }
+
 header .searchBar {
   display: flex;
   justify-content: center;
@@ -130,6 +145,7 @@ header .searchBar span input {
   padding: 0.4rem 1.5rem;
   font-size: 13px;
 }
+
 header .searchBar span input::placeholder {
   color: #979494;
   font-size: 15px;
@@ -145,18 +161,21 @@ header .searchBar input:focus {
   outline: none;
   border: 2px solid #060606;
 }
+
 header .searchBar div {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
 }
+
 header .searchBar div a {
   color: white;
   font-size: 16px;
   font-weight: 300;
   text-decoration: underline;
 }
+
 header .searchBar div a:hover {
   color: #979494;
 }
@@ -203,11 +222,13 @@ header .searchBar div a:hover {
   scroll-behavior: smooth;
   -ms-overflow-style: none;
   scrollbar-width: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
 }
-.container .news .newsInfo > div,
+
+.container .news .newsInfo>div,
 .container .shopping .containerShopping .shoppingArtecl {
   display: flex;
   gap: 0.2rem;
@@ -217,12 +238,13 @@ header .searchBar div a:hover {
   margin: 0 0.5rem 0 0.5rem;
 }
 
-.container .news .newsInfo > div:hover {
+.container .news .newsInfo>div:hover {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease-in-out;
   transform: scale(1.02);
 }
-.container .news .newsInfo > div p {
+
+.container .news .newsInfo>div p {
   font-size: 14px;
   font-weight: 300;
   color: #979494;
@@ -234,7 +256,7 @@ header .searchBar div a:hover {
   margin-top: 0.4rem;
 }
 
-.container .news .newsInfo > div h3 {
+.container .news .newsInfo>div h3 {
   font-size: 16px;
   font-weight: bold;
   color: #00576a;
@@ -246,7 +268,7 @@ header .searchBar div a:hover {
   margin-top: 0.4rem;
 }
 
-.container .news .newsInfo > div h5 {
+.container .news .newsInfo>div h5 {
   font-size: 12px;
   font-weight: bold;
   color: #228b22;
@@ -264,6 +286,7 @@ header .searchBar div a:hover {
   text-align: left;
   color: #228b22;
 }
+
 .container .news .newsimg {
   overflow: hidden;
   position: relative;
@@ -277,6 +300,7 @@ header .searchBar div a:hover {
   height: 100%;
   object-fit: cover;
 }
+
 /* ////////////////////////////////////// */
 
 .container .live .containerLiveMatch {
@@ -320,6 +344,7 @@ header .searchBar div a:hover {
   left: 0;
   z-index: 1;
 }
+
 .container .live .containerLiveMatch h2 {
   font-size: 20px;
   font-weight: bold;
@@ -333,6 +358,7 @@ header .searchBar div a:hover {
   text-align: left;
   color: #007565;
 }
+
 .container .live .containerLiveMatch .liveMatch .liveImg {
   overflow: hidden;
   position: relative;
@@ -341,19 +367,13 @@ header .searchBar div a:hover {
   border-radius: 50%;
   /* background-color: #060606; */
 }
+
 .container .live .containerLiveMatch .liveMatch .liveImg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 16px;
 }
-.container .live .containerLiveMatch .liveMatch .vs {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: end;
-  gap: 0.5rem;
-}
 
 .container .live .containerLiveMatch .liveMatch .vs {
   display: flex;
@@ -363,7 +383,15 @@ header .searchBar div a:hover {
   gap: 0.5rem;
 }
 
-.container .live .containerLiveMatch .liveMatch > div {
+.container .live .containerLiveMatch .liveMatch .vs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: end;
+  gap: 0.5rem;
+}
+
+.container .live .containerLiveMatch .liveMatch>div {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -411,6 +439,7 @@ header .searchBar div a:hover {
 .container .shopping .sommer h2 {
   width: fit-content;
 }
+
 .container .shopping .sommer button {
   width: fit-content;
   background-color: transparent;
@@ -428,7 +457,7 @@ header .searchBar div a:hover {
   /* border:none; */
 }
 
-.shopping .containerShopping .shoppingArtecl > div {
+.shopping .containerShopping .shoppingArtecl>div {
   width: 223px;
   height: 283px;
   overflow: hidden;
@@ -443,7 +472,7 @@ header .searchBar div a:hover {
   transform: scale(1.02);
 }
 
-.shopping .containerShopping .shoppingArtecl > div img {
+.shopping .containerShopping .shoppingArtecl>div img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -476,10 +505,14 @@ header .searchBar div a:hover {
 .container .shopping .containerShopping {
   display: flex;
   overflow-x: auto;
-  scroll-behavior: smooth; /* pour un défilement doux */
-  gap: 40px; /* espace entre les articles */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  scroll-behavior: smooth;
+  /* pour un défilement doux */
+  gap: 40px;
+  /* espace entre les articles */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
   width: 100%;
   height: 100%;
   padding: 1rem 1rem;
@@ -489,8 +522,10 @@ header .searchBar div a:hover {
 
 
 .containerShopping::-webkit-scrollbar-thumb {
-  background: #888; /* Couleur de la scrollbar */
-  border-radius: 10px; /* Coins arrondis */
+  background: #888;
+  /* Couleur de la scrollbar */
+  border-radius: 10px;
+  /* Coins arrondis */
 }
 
 /* ////////////////////////////////////////////////////////////////// */
@@ -504,6 +539,7 @@ header .searchBar div a:hover {
   font-size: 16px;
   font-weight: medium;
 }
+
 .container .statistics .filter select option {
   background-color: white;
   border: none;
@@ -512,7 +548,7 @@ header .searchBar div a:hover {
   font-weight: 300;
 }
 
-.container .statistics .filter > div {
+.container .statistics .filter>div {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -522,13 +558,14 @@ header .searchBar div a:hover {
   color: #00576a;
 }
 
-.container .statistics .filter > div > div {
+.container .statistics .filter>div>div {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   overflow: hidden;
 }
-.container .statistics .filter > div > div img {
+
+.container .statistics .filter>div>div img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -555,7 +592,8 @@ header .searchBar div a:hover {
   font-size: 16px;
   font-weight: medium;
   color: #100f0f;
-  padding: 1rem 0.5rem; /* Padding appliqué à toute la ligne */
+  padding: 1rem 0.5rem;
+  /* Padding appliqué à toute la ligne */
   height: 64px;
   font-size: 16px;
   font-weight: 500;
@@ -564,6 +602,7 @@ header .searchBar div a:hover {
   border-radius: 16px;
 
 }
+
 .container .statistics .statisticsInfo table tbody tr:hover {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
   border-radius: 16px;
@@ -583,7 +622,7 @@ header .searchBar div a:hover {
 }
 
 
-.container .statistics .statisticsInfo table tbody td > div {
+.container .statistics .statisticsInfo table tbody td>div {
   display: flex;
   justify-content: left;
   align-items: center;
@@ -615,6 +654,7 @@ header .searchBar div a:hover {
   padding: 0.2rem 0.2rem;
   position: relative;
 }
+
 .container .statistics .statisticsInfo tbody .imgStatDiv img {
   width: 100%;
   height: 100%;
@@ -624,7 +664,7 @@ header .searchBar div a:hover {
 
 /* ////////////////////////////////////////////////////////////////////// */
 
-.container .clubs .containerClubs .clubsInfo > div {
+.container .clubs .containerClubs .clubsInfo>div {
   display: flex;
   width: 124px;
   height: 124px;
@@ -634,12 +674,14 @@ header .searchBar div a:hover {
   justify-content: center;
   align-items: center;
 }
-.container .clubs .containerClubs .clubsInfo > div img {
+
+.container .clubs .containerClubs .clubsInfo>div img {
   width: 63px;
   height: 64px;
   object-fit: cover;
   /* border-radius: 50%; */
 }
+
 .container .clubs .containerClubs .clubsInfo h3 {
   font-size: 16px;
   font-weight: medium;
@@ -667,7 +709,9 @@ header .searchBar div a:hover {
   flex-wrap: wrap;
 }
 
-.footer .footerContent, .footer .socialMediaIcons, footer .footerLinks {
+.footer .footerContent,
+.footer .socialMediaIcons,
+footer .footerLinks {
   display: flex;
   align-items: start;
   margin: 0 1rem;
@@ -678,12 +722,13 @@ header .searchBar div a:hover {
   text-align: left;
 
 }
-.footer .socialMediaIcons img{
+
+.footer .socialMediaIcons img {
   width: 32px;
   height: 32px;
 }
 
-.footer  a{
+.footer a {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -694,13 +739,9 @@ header .searchBar div a:hover {
   /* text-shadow: white 0 0 0; */
 }
 
-.footer a:hover{
+.footer a:hover {
   color: #ffffff;
   text-decoration: underline;
 }
 
 /* footer .footerLinks a */
-
-
-
-

@@ -1,14 +1,14 @@
 import React from "react";
 import Header from "../includes/Header";
 import espanLogo from "../../assets/images/espanLogo.webp";
-import "../livePage/LivePageStyle.css";
+import "./LivePageStyle.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faMicrophone } from "@fortawesome/free-solid-svg-icons";
 // import { faM } from "@fortawesome/free-solid-svg-icons";
 
 const LivePage = () => {
-  const[validation, setValidation] = useState({passer: true,venir: false});
+  const [validation, setValidation] = useState({ passer: true, venir: false });
   return (
     <>
       <Header />
