@@ -1,5 +1,5 @@
 import React from "react";
-import logoGoolInBall from "../../assets/images/logo.png";
+import logoGoolInBall from "../../assets/images/whiteLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import linkedin_icon from "../../assets/images/linkedin_icon.png";
 import facebook_icon from '../../assets/images/facebook_icon.png';

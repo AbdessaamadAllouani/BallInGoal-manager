@@ -23,7 +23,15 @@ dist-ssr
 *.sln
 *.sw?
 
+<<<<<<< HEAD
 #les maquettes
 les maquettes/
 #logo
 logo
+=======
+
+<<<<<<< HEAD
+
+>>>>>>> 57c0cf1 (la creation da la page signUp et ajouter un dossier pour le logo)
+=======
+>>>>>>> e2bc5d9 (ameloration de la page signUp and creation de la from de connexion)
