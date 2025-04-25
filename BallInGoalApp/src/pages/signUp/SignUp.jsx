@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import logo from '../../assets/images/logo.png'
 import { Link } from 'react-router-dom';
-import logo from '../../assets/images/logo.png';
+
 import glogo from '../../assets/images/g-logo.png';
 import './signUp.css';
 import SignIn from '../SignIn/SignIn';
