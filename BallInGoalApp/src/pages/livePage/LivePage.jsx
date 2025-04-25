@@ -5,6 +5,7 @@ import "../livePage/LivePageStyle.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import Footer from "../includes/Footer";
 // import { faM } from "@fortawesome/free-solid-svg-icons";
 
 const LivePage = () => {
@@ -238,6 +239,7 @@ const LivePage = () => {
           )}
         </div>
       </div>
+      <Footer/>
     </>
   );
 };
