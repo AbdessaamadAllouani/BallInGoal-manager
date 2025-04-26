@@ -36,16 +36,20 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import SignUp from "./signUp/SignUp";
+import SignIn from "./SignIn/SignIn";
 const HomePage = () => {
   const [news, setNews] = useState([]);
   const [error, seterror] = useState(null);
-  
-  useEffect(() => { 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalType, setModalType] = useState(''); // 'login' ou 'registrter'
+
+  useEffect(() => {
     const fetchNews = async () => {
       try {
         const response = await axios.get(
-                    "http://127.0.0.1:8000/api/news"
-                );
+          "http://127.0.0.1:8000/api/news"
+        );
 
         setNews(response.data);
       } catch (err) {
@@ -68,10 +72,21 @@ const HomePage = () => {
       }
     }
   };
+  const openModal = (type) => {
+    setIsModalOpen(true);
+    setModalType(type);
+  }
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
 
   return (
     <>
-      <Header />
+      <Header
+        onOpenLogin={() => openModal('login')}
+        onOpenRegister={() => openModal('register')}
+
+      />
       <div className="container">
         <div className="news">
           <h2>📰 Actualités du jour</h2>
@@ -90,6 +105,26 @@ const HomePage = () => {
                 </Link>
               </div>
             ))}
+            {
+              isModalOpen && (
+                <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+                  <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <button className="close-modal" onClick={() => setIsModalOpen(false)}>x</button>
+                    {modalType === 'login' ? (
+                      <SignIn onClose={() => setIsModalOpen(false)} />
+                    ) : (
+                      <SignUp
+                        onClose={() => setIsModalOpen(false)}
+                        onSuccess={() => {
+                          console.log('Inscription reussie !');
+                        }}
+
+                      />
+                    )}
+                  </div>
+                </div>
+              )
+            }
             {/* <div>
               <div className="newsimg">
                 <img src={newsimg} alt="" />
