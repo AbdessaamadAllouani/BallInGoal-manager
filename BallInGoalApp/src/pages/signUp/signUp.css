@@ -6,36 +6,6 @@
 }
 
 
-.btn-connexion {
-    right: 0;
-    background-color: transparent;
-    color: white;
-    border: 2px solid, white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 1rem;
-    transition: 0.4s;
-    margin-left: auto;
-}
-
-
-.btn-connexion:hover {
-    background-color: #00576A;
-    border: 2px solid transparent;
-}
-
-
-.form-container {
-    position: absolute;
-    max-width: 500px;
-    width: 90%;
-    margin: 2rem auto;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.253);
-    background-color: white;
-}
 
 
 .form-title {
@@ -56,8 +26,8 @@ input {
     font-size: 1rem;
 }
 
-.form-container select:focus,
-.form-container input:focus {
+select:focus,
+input:focus {
     outline: none;
     border-color: #228B22;
 }
