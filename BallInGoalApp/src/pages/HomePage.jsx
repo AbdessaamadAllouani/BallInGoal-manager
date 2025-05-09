@@ -1,11 +1,11 @@
 // import { useState } from "react";
-
 // import { useEffect } from "react";
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Header from "./includes/Header";
 import Footer from "./includes/Footer";
+import "./HomePage.css";
 import { BrowserRouter } from "react-router-dom";
 import newsimg1 from "../assets/images/newsimg1.webp";
 import newsimg2 from "../assets/images/newsimg2.jpg";
@@ -39,6 +39,19 @@ import {
 const HomePage = () => {
   const [news, setNews] = useState([]);
   const [error, seterror] = useState(null);
+  const [standings, setstandings] = useState([]);
+  const [leagues, setLeagues] = useState([]);
+  const furstLeagueId = leagues?.[0]?.id || null; // ID de la ligue par défaut
+  const [selectedLeagueId, setSelectedLeagueId] = useState(1);
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  useEffect(() => {
+    if (leagues.length > 0) {
+      setSelectedLeagueId(furstLeagueId); // Définit la ligue par défaut lors du premier rendu
+    }
+  }, [leagues]);
+
   
   useEffect(() => { 
     const fetchNews = async () => {
@@ -53,6 +66,48 @@ const HomePage = () => {
       }
     };
     fetchNews();
+  }, []);
+
+  useEffect(() => {
+    const fetchLeagues = async () => {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/leagues"
+        );
+        setLeagues(response.data);
+      } catch (err) {
+        seterror(err.message);
+      }
+    };
+    fetchLeagues();
+  }, []);
+
+  useEffect(() => {
+    const fetchStandings = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/standings/${selectedLeagueId}`
+        );
+        setstandings(response.data);
+      } catch (err) {
+        seterror(err.message);
+      }
+    };
+    fetchStandings();
+  }, [selectedLeagueId]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/products"
+        );
+        setProducts(response.data);
+      } catch (err) {
+        seterror(err.message);
+      }
+    };
+    fetchProducts();
   }, []);
 
   const shoppingContainerRef = useRef(null);
@@ -278,247 +333,144 @@ const HomePage = () => {
             <div className="filter">
               <div>
                 <div>
-                  <img src={england} alt="" />
+                  <img
+                    src={
+                      leagues.find((league) => league.id == selectedLeagueId)
+                        ?.logo
+                    }
+                    alt="League Logo"
+                    className="leagueLogo"
+                  />
                 </div>
-                <div>
-                  <img src={league} alt="" />
-                </div>
-                <select name="" id="">
-                  <option value="">Premier League</option>
-                  <option value="">Premier League</option>
-                  <option value="">Premier League</option>
+                <select
+                  value={selectedLeagueId}
+                  onChange={(e) => setSelectedLeagueId(e.target.value)}
+                >
+                  {leagues.map((league) => (
+                    <option key={league.id} value={league.id}>
+                      {league.name}
+                    </option>
+                  ))}
                 </select>
               </div>
-              <Link to="/statistiques">voir plus</Link>
             </div>
-            <div className="statisticsInfo">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Club</th>
-                    <th>W</th>
-                    <th>D</th>
-                    <th>L</th>
-                    <th>Pts</th>
-                    <th>Dernieres Match</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div>
-                        1{" "}
-                        <div className="imgStatDiv">
-                          <img src={manchesterSityLogo} alt="" />
-                        </div>{" "}
-                        Manchester City
-                      </div>
-                    </td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>
-                      {" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "red" }}
-                        icon={faCircleXmark}
-                      />{" "}
-                    </td>
-                  </tr>
 
-                  <tr>
-                    <td>
-                      <div>
-                        1{" "}
-                        <div className="imgStatDiv">
-                          <img src={westHamLogo} alt="" />
-                        </div>{" "}
-                        Wesst Ham
-                      </div>
-                    </td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>
-                      {" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "red" }}
-                        icon={faCircleXmark}
-                      />{" "}
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div>
-                        1{" "}
-                        <div className="imgStatDiv">
-                          <img src={arsenalLogo} alt="" />
-                        </div>{" "}
-                        Arsenal
-                      </div>
-                    </td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>
-                      {" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "red" }}
-                        icon={faCircleXmark}
-                      />{" "}
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div>
-                        1{" "}
-                        <div className="imgStatDiv">
-                          <img src={chelseaLogo} alt="" />
-                        </div>{" "}
-                        Chelsea
-                      </div>
-                    </td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>
-                      {" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "red" }}
-                        icon={faCircleXmark}
-                      />{" "}
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div>
-                        1{" "}
-                        <div className="imgStatDiv">
-                          <img src={manchesterUnitedLogo} alt="" />
-                        </div>{" "}
-                        Manchester United
-                      </div>
-                    </td>
-
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>
-                      {" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "red" }}
-                        icon={faCircleXmark}
-                      />{" "}
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div>
-                        1{" "}
-                        <div className="imgStatDiv">
-                          <img src={liverppolLogo} alt="" />
-                        </div>{" "}
-                        Liverpool
-                      </div>
-                    </td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>
-                      {" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "green" }}
-                        icon={faCircleCheck}
-                      />{" "}
-                      <FontAwesomeIcon
-                        style={{ color: "red" }}
-                        icon={faCircleXmark}
-                      />{" "}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            {standings.length > 0 ? (
+              <div className="statisticsInfo">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Club</th>
+                      <th>victoires</th>
+                      <th>tirages</th>
+                      <th>pertes</th>
+                      <th>points</th>
+                      <th>jouée</th>
+                      <th>différences de buts</th>
+                      <th>Derniers Matchs</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {standings.map((team) => (
+                      <tr key={team.id}>
+                        <td>
+                          <div>
+                            {team.rank}{" "}
+                            <div className="imgStatDiv">
+                              <img src={team.team_logo} alt="" />
+                            </div>{" "}
+                            {team.team_name}
+                          </div>
+                        </td>
+                        <td>{team.wins}</td>
+                        <td>{team.draws}</td>
+                        <td>{team.losses}</td>
+                        <td>{team.points}</td>
+                        <td>{team.played}</td>
+                        <td>{team.goals_diff}</td>
+                        <td>
+                          {team.form &&
+                            team.form.split("").map((item, index) => {
+                              return item === "W" ? (
+                                <FontAwesomeIcon
+                                  key={index}
+                                  icon={faCircleCheck}
+                                  style={{ color: "green", margin: "0 0.5px" }}
+                                />
+                              ) : item === "L" ? (
+                                <FontAwesomeIcon
+                                  key={index}
+                                  icon={faCircleXmark}
+                                  style={{ color: "red", margin: "0 0.5px" }}
+                                />
+                              ) : (
+                                <FontAwesomeIcon
+                                  key={index}
+                                  icon={faCircleXmark}
+                                  style={{ color: "gray", margin: "0 0.5px" }}
+                                />
+                              );
+                            })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p>Aucun classement disponible pour cette ligue.</p>
+            )}
           </div>
         </div>
+        {selectedProduct && (
+          
+          <div className="overlay" 
+          onClick={() => setSelectedProduct(null)}
+          >
+          <div className="modal">
+            <button
+              onClick={()=>setSelectedProduct(null)}
+              className="close-button"
+            >
+              ×
+            </button>
+        
+            <img
+              src={`http://localhost:8000/storage/${selectedProduct.image}`}
+              alt={selectedProduct.name}
+              className="product-image"
+            />
+        
+            <h2 className="product-title">{selectedProduct.name}</h2>
+            <p className="product-description">{selectedProduct.description}</p>
+        
+            <div className="quantity-section">
+              <label className="quantity-label">Quantité</label>
+              <input
+                type="number"
+                defaultValue="1"
+                min="1"
+                className="quantity-input"
+              />
+            </div>
+        
+             {/* <div className="color-section">
+              <label className="color-label">Couleur</label>
+              <select className="color-select">
+                {
+                selectedProduct.colors.map((color, index) => (
+                  <option key={index} value={color}>{color}</option>
+                ))}
+              </select>
+            </div> */}
+        
+            <button className="add-to-cart-button">
+              Ajouter au panier - {selectedProduct.price} $
+            </button>
+          </div>
+        </div>
+        
+      )}
 
         <div className="shopping">
           <div className="sommer">
@@ -535,61 +487,20 @@ const HomePage = () => {
             </div>
           </div>
           <div className="containerShopping" ref={shoppingContainerRef}>
-            <div className="shoppingArtecl">
-              <div>
-                <img src={jsk} alt="" />
+            {products.map((product) => (
+              <div className="shoppingArtecl" key={product.id}
+                onClick={() => setSelectedProduct(product)}
+              >
+                <div>
+                  <img
+                    src={`http://localhost:8000/storage/${product.image}`}
+                    alt=""
+                  />
+                </div>
+                <p>{product.name}</p>
+                <h3>{product.price} $</h3>
               </div>
-              <p>nom de ticheurte</p>
-              <h3>23.8 $</h3>
-            </div>
-
-            <div className="shoppingArtecl">
-              <div>
-                <img src={maroctuni} alt="" />
-              </div>
-              <p>nom de ticheurte</p>
-              <h3>23.8 $</h3>
-            </div>
-
-            <div className="shoppingArtecl">
-              <div>
-                <img src={raja} alt="" />
-              </div>
-              <p>nom de ticheurte</p>
-              <h3>23.8 $</h3>
-            </div>
-
-            <div className="shoppingArtecl">
-              <div>
-                <img src={city} alt="" />
-              </div>
-              <p>nom de ticheurte</p>
-              <h3>23.8 $</h3>
-            </div>
-
-            <div className="shoppingArtecl">
-              <div>
-                <img src={chelsea} alt="" />
-              </div>
-              <p>nom de ticheurte</p>
-              <h3>23.8 $</h3>
-            </div>
-
-            <div className="shoppingArtecl">
-              <div>
-                <img src={real} alt="" />
-              </div>
-              <p>nom de ticheurte</p>
-              <h3>23.8 $</h3>
-            </div>
-
-            <div className="shoppingArtecl">
-              <div>
-                <img src={barcelona} alt="" />
-              </div>
-              <p>nom de ticheurte</p>
-              <h3>23.8 $</h3>
-            </div>
+            ))}
           </div>
         </div>
         <div className="live">

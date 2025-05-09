@@ -42,4 +42,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'users_products')
+            ->withPivot('quantity', 'size', 'color')
+            ->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    
 }

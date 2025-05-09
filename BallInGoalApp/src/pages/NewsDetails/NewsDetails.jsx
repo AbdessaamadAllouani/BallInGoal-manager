@@ -31,13 +31,18 @@ const NewsDetails = () => {
         {error && <p>{error}</p>}
         {article && (
           <div className="news-details">
+            <h1>{article.title}</h1>
             <img src={article.image} alt={article.title} />
-            <h2>{article.title}</h2>
             <h5>{article.source}</h5>
-            <p>{article.description}</p>
+            <h3>{article.description}</h3>
             <p>{article.content}</p>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <h5>{article.published_at}</h5>
+            <h5>{article.author}</h5>
+            </div>
           </div>
         )}
+        {!article && !error && <p>Chargement...</p>}
       </div>
       <Footer />
     </>

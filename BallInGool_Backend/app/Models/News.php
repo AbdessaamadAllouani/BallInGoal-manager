@@ -11,6 +11,8 @@ class News extends Model
     protected $fillable = [
         'title',
         'description',
+        'content',
+        'author',
         'url',
         'source',
         'image',
@@ -23,5 +25,10 @@ class News extends Model
     public function getRouteKeyName()
     {
         return 'id';
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

@@ -16,6 +16,9 @@ public function up()
         $table->id();
         $table->string('title');
         $table->text('description')->nullable();
+        $table->text('content')->nullable();
+        $table->string('author')->nullable();
+
         $table->string('url');
         $table->string('source');
         $table->text('image')->nullable(); 
