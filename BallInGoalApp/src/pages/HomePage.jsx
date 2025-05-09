@@ -36,6 +36,8 @@ import {
   faCircleCheck,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import SignUp from "./signUp/SignUp";
+import SignIn from "./SignIn/SignIn";
 const HomePage = () => {
   const [news, setNews] = useState([]);
   const [error, seterror] = useState(null);
@@ -45,6 +47,8 @@ const HomePage = () => {
   const [selectedLeagueId, setSelectedLeagueId] = useState(1);
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(""); // 'login' ou 'registrter'
 
   useEffect(() => {
     if (leagues.length > 0) {
@@ -52,13 +56,10 @@ const HomePage = () => {
     }
   }, [leagues]);
 
-  
-  useEffect(() => { 
+  useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get(
-                    "http://127.0.0.1:8000/api/news"
-                );
+        const response = await axios.get("http://127.0.0.1:8000/api/news");
 
         setNews(response.data);
       } catch (err) {
@@ -71,9 +72,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchLeagues = async () => {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/leagues"
-        );
+        const response = await axios.get("http://127.0.0.1:8000/api/leagues");
         setLeagues(response.data);
       } catch (err) {
         seterror(err.message);
@@ -99,9 +98,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/products"
-        );
+        const response = await axios.get("http://localhost:8000/api/products");
         setProducts(response.data);
       } catch (err) {
         seterror(err.message);
@@ -123,10 +120,20 @@ const HomePage = () => {
       }
     }
   };
+  const openModal = (type) => {
+    setIsModalOpen(true);
+    setModalType(type);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
-      <Header />
+      <Header
+        onOpenLogin={() => openModal("login")}
+        onOpenRegister={() => openModal("register")}
+      />
       <div className="container">
         <div className="news">
           <h2>📰 Actualités du jour</h2>
@@ -145,6 +152,31 @@ const HomePage = () => {
                 </Link>
               </div>
             ))}
+            {isModalOpen && (
+              <div
+                className="modal-overlay"
+                onClick={() => setIsModalOpen(false)}
+              >
+                <div className="modal" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    className="close-modal"
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    x
+                  </button>
+                  {modalType === "login" ? (
+                    <SignIn onClose={() => setIsModalOpen(false)} />
+                  ) : (
+                    <SignUp
+                      onClose={() => setIsModalOpen(false)}
+                      onSuccess={() => {
+                        console.log("Inscription reussie !");
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
             {/* <div>
               <div className="newsimg">
                 <img src={newsimg} alt="" />
@@ -423,38 +455,37 @@ const HomePage = () => {
           </div>
         </div>
         {selectedProduct && (
-          
-          <div className="overlay" 
-          onClick={() => setSelectedProduct(null)}
-          >
-          <div className="modal">
-            <button
-              onClick={()=>setSelectedProduct(null)}
-              className="close-button"
-            >
-              ×
-            </button>
-        
-            <img
-              src={`http://localhost:8000/storage/${selectedProduct.image}`}
-              alt={selectedProduct.name}
-              className="product-image"
-            />
-        
-            <h2 className="product-title">{selectedProduct.name}</h2>
-            <p className="product-description">{selectedProduct.description}</p>
-        
-            <div className="quantity-section">
-              <label className="quantity-label">Quantité</label>
-              <input
-                type="number"
-                defaultValue="1"
-                min="1"
-                className="quantity-input"
+          <div className="overlay" onClick={() => setSelectedProduct(null)}>
+            <div className="modal">
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="close-button"
+              >
+                ×
+              </button>
+
+              <img
+                src={`http://localhost:8000/storage/${selectedProduct.image}`}
+                alt={selectedProduct.name}
+                className="product-image"
               />
-            </div>
-        
-             {/* <div className="color-section">
+
+              <h2 className="product-title">{selectedProduct.name}</h2>
+              <p className="product-description">
+                {selectedProduct.description}
+              </p>
+
+              <div className="quantity-section">
+                <label className="quantity-label">Quantité</label>
+                <input
+                  type="number"
+                  defaultValue="1"
+                  min="1"
+                  className="quantity-input"
+                />
+              </div>
+
+              {/* <div className="color-section">
               <label className="color-label">Couleur</label>
               <select className="color-select">
                 {
@@ -463,14 +494,13 @@ const HomePage = () => {
                 ))}
               </select>
             </div> */}
-        
-            <button className="add-to-cart-button">
-              Ajouter au panier - {selectedProduct.price} $
-            </button>
+
+              <button className="add-to-cart-button">
+                Ajouter au panier - {selectedProduct.price} $
+              </button>
+            </div>
           </div>
-        </div>
-        
-      )}
+        )}
 
         <div className="shopping">
           <div className="sommer">
@@ -488,7 +518,9 @@ const HomePage = () => {
           </div>
           <div className="containerShopping" ref={shoppingContainerRef}>
             {products.map((product) => (
-              <div className="shoppingArtecl" key={product.id}
+              <div
+                className="shoppingArtecl"
+                key={product.id}
                 onClick={() => setSelectedProduct(product)}
               >
                 <div>

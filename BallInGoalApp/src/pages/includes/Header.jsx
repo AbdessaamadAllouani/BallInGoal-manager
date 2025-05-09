@@ -17,7 +17,7 @@ import logoBallInGool from "../../assets/images/logoGoolInBall.png";
 import listicon from "../../assets/images/listicon.png";
 
 import { Link } from "react-router-dom";
-const Header = () => {
+const Header = ({ onOpenLogin, onOpenRegister }) => {
   return (
     <header className="header">
       <nav>
@@ -45,10 +45,8 @@ const Header = () => {
           <FontAwesomeIcon icon={faBell} />
           <FontAwesomeIcon icon={faCircleInfo} />
           <FontAwesomeIcon icon={faHeadset} />
-          <Link to={"/df"} className="connexion">
-            Connexion
-          </Link>
-          <Link to={"/Inscription"} className="inscription">Inscription</Link>
+          <button className="connexion" onClick={onOpenLogin}>Connexion</button>
+          <button className="inscription" onClick={onOpenRegister}>Inscription</button>
         </div>
       </nav>
       <div className="searchBar">
