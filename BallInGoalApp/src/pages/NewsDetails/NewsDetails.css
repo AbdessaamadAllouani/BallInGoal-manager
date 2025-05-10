@@ -48,3 +48,58 @@
     font-size: 15px;
   }
 }
+
+.comments-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f3f3f3;
+  border-radius: 8px;
+}
+
+.comment, .reply {
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-left: 3px solid #007bff;
+  border-radius: 5px;
+}
+
+.reply {
+  margin-left: 20px;
+  border-left-color: #6c757d;
+}
+
+.reactions {
+  margin-top: 5px;
+}
+
+.reactions button {
+  margin-right: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-comment {
+  margin-top: 20px;
+}
+
+.add-comment textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  margin-bottom: 10px;
+  resize: vertical;
+}
+
+.add-comment button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+

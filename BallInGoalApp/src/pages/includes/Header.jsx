@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 // import { useState } from "react";
 // import { useEffect } from "react";
 // import { useRef } from "react";
@@ -9,15 +9,40 @@ import {
   faCircleInfo,
   faHeadset,
   faHouse,
+  faLeaf,
   faNewspaper,
   faSearch,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import logoBallInGool from "../../assets/images/logoGoolInBall.png";
 import listicon from "../../assets/images/listicon.png";
-
+import useAuth from "../../hook/useAuth";
+import profile from "../../assets/images/profile.png";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Profile from "../../components/profile/profile";
 const Header = ({ onOpenLogin, onOpenRegister }) => {
+  const isAuthenticated = useAuth();
+  const [user, setuser] = useState({});
+  const [error, seterror] = useState("");
+  const [actived, setActived] = useState(false);
+
+  useEffect(() => {
+    const fetchuser = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setuser(response.data);
+      } catch (err) {
+        seterror(err.message);
+      }
+    };
+    fetchuser();
+  }, [isAuthenticated]);
   return (
     <header className="header">
       <nav>
@@ -42,23 +67,40 @@ const Header = ({ onOpenLogin, onOpenRegister }) => {
           </Link>
         </div>
         <div className="helpIcon">
-          <FontAwesomeIcon icon={faBell} />
+          {isAuthenticated && <FontAwesomeIcon icon={faBell} />}
           <FontAwesomeIcon icon={faCircleInfo} />
           <FontAwesomeIcon icon={faHeadset} />
-          <button className="connexion" onClick={onOpenLogin}>Connexion</button>
-          <button className="inscription" onClick={onOpenRegister}>Inscription</button>
+          {isAuthenticated ? (
+            <div
+              className="profile"
+              onClick={() => setActived(true)}
+              style={{ cursor: "pointer" }}
+            >
+              <img src={user.image ? `${user.image}` : profile} alt="profile" />
+            </div>
+          ) : (
+            <>
+              <button className="connexion" onClick={onOpenLogin}>
+                Connexion
+              </button>
+              <button className="inscription" onClick={onOpenRegister}>
+                Inscription
+              </button>
+            </>
+          )}
         </div>
       </nav>
       <div className="searchBar">
-        <span>
+        {/* <span>
           <FontAwesomeIcon className="search" icon={faSearch} />
           <input type="text" placeholder="recherche..." />
-        </span>
+        </span> */}
         <div>
           <Link to={"/CM"}>Competition</Link>
           <Link to={"/CL"}>Clubs</Link>
         </div>
       </div>
+      {actived && <Profile user={user} setActived={setActived} />}
     </header>
   );
 };

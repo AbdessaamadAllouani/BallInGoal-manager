@@ -10,11 +10,12 @@ class Comment extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'post_id',
+        'news_id',
         'comment',
         'like_count',
         'dislike_count',
         'is_edited',
+        'is_response',
     ];
 
     public function user()
@@ -25,4 +26,9 @@ class Comment extends Model
     {
         return $this->belongsTo(News::class);
     }
+    public function likes()
+{
+    return $this->hasMany(Like::class);
+}
+
 }

@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'telephone',
         'email',
         'password',
     ];
@@ -55,4 +56,9 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
     
+    public function likes()
+{
+    return $this->hasMany(Like::class);
+}
+
 }

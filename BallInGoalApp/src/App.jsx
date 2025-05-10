@@ -9,6 +9,7 @@ import SignUp from "./pages/signUp/SignUp";
 
 import NewsDetails from "./pages/NewsDetails/NewsDetails";
 import AllNews from "./pages/AllNews/AllNews";
+import GoogleSuccess from './components/GoogleSuccess';
 function App() {
 
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/Inscription" element={<SignUp />} />
           <Route path="/news/:id" element={<NewsDetails />} />
           <Route path="/news" element={<AllNews />} />
+          <Route path="/google-success" element={<GoogleSuccess />} />
         </Routes>
       </BrowserRouter>
     </>

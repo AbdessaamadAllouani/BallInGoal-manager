@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Like;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -26,7 +27,7 @@ class CommentController extends Controller
             'news_id' => 'required|exists:news,id',
             'user_id' => 'required|exists:users,id',
             'comment' => 'required|string|max:255',
-            'is_response' => 'boolean',
+            'is_response' => 'integer|nullable',
         ]);
 
         // Create a new comment
@@ -36,7 +37,9 @@ class CommentController extends Controller
             'user_id' => $request->user_id,
             'comment' => $request->comment,
             'is_response' => $request->is_response,
-        ]);
+        ])->with(['user:id,name', 'news:id,title'])
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         // Return the created comment
         return response()->json(['comment' => $comment, 'status' => 'success']);
@@ -74,18 +77,32 @@ class CommentController extends Controller
         return response()->json(['message' => 'Comment deleted successfully', 'status' => 'success']);
     }
 
-    public function likeComment($id)
+    public function like($id)
     {
-        // Find the comment by ID
+        $user = auth()->user();
         $comment = Comment::findOrFail($id);
+    
+        $alreadyLiked = Like::where('user_id', $user->id)
+                            ->where('comment_id', $id)
+                            ->first();
+    
+        if ($alreadyLiked) {
+            $alreadyLiked->delete();
+            $comment->decrement('like_count');
+            return response()->json(["comment"=>$comment,'message' => false]);
 
-        // Increment the like count
+        }
+    
+        Like::create([
+            'user_id' => $user->id,
+            'comment_id' => $id,
+        ]);
         $comment->increment('like_count');
 
-        // Return the updated comment
-        return response()->json(['comment' => $comment, 'status' => 'success']);
+    
+        return response()->json(['comment' => $comment, 'message' => true]);
     }
-
+    
     public function dislikeComment($id)
     {
         // Find the comment by ID

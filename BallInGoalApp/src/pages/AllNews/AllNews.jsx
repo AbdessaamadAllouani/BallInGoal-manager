@@ -28,11 +28,17 @@ const AllNews = () => {
         <h2>📰 Toutes les Nouvelles</h2>
         {error && <p>{error}</p>}
         <div className="news-grid">
-          {news.map((item) => (
-            <Link key={item.id} to={`/news/${item.id}`} className="news-card">
+          {news.map((item, index) => (
+            <Link
+              key={item.id}
+              to={`/news/${item.id}`}
+              className={`news-card ${index % 10 === 0 ? "featured" : ""}`}
+            >
               <img src={item.image} alt={item.title} />
-              <h3>{item.title}</h3>
-              <p>{item.source}</p>
+              <div className="news-content">
+                <h3>{item.title}</h3>
+                <p>{item.source}</p>
+              </div>
             </Link>
           ))}
         </div>
