@@ -53,4 +53,33 @@ class AutoController extends Controller
 
         return response()->json(['message' => 'User not found'], 404);
     }
+
+    public function updateUser(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:15',
+            'password' => 'nullable|string|min:8|confirmed',
+            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+        ]);
+
+        if ($user) {
+            $user = $user->updateOrCreate(
+                ['id' => $user->id],
+                [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'telephone' => $request->phone,
+                    'image' => $request->image ? $request->file('image')->store('images', 'public') : $user->image,
+                    'password' => $request->password ? bcrypt($request->password) : $user->password,
+                ]
+            );
+            return response()->json(['user'=>$user,'message' => 'User updated successfully']);
+        }
+
+        return response()->json(['message' => 'User not found'], 404);
+    }
 }

@@ -12,7 +12,7 @@ class CommentController extends Controller
     {
         // Fetch all comments from the database
         $comments = Comment::where('news_id', $id)
-            ->with(['user:id,name', 'news:id,title'])
+            ->with(['user:id,name,image', 'news:id,title'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -37,7 +37,7 @@ class CommentController extends Controller
             'user_id' => $request->user_id,
             'comment' => $request->comment,
             'is_response' => $request->is_response,
-        ])->with(['user:id,name', 'news:id,title'])
+        ])->with(['user:id,name,image', 'news:id,title'])
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -84,6 +84,7 @@ class CommentController extends Controller
     
         $alreadyLiked = Like::where('user_id', $user->id)
                             ->where('comment_id', $id)
+                            ->where('type', true)
                             ->first();
     
         if ($alreadyLiked) {
@@ -96,6 +97,7 @@ class CommentController extends Controller
         Like::create([
             'user_id' => $user->id,
             'comment_id' => $id,
+            'type' => true
         ]);
         $comment->increment('like_count');
 
@@ -103,15 +105,31 @@ class CommentController extends Controller
         return response()->json(['comment' => $comment, 'message' => true]);
     }
     
-    public function dislikeComment($id)
+    public function dislike($id)
     {
-        // Find the comment by ID
+        $user = auth()->user();
         $comment = Comment::findOrFail($id);
+    
+        $alreadyLiked = Like::where('user_id', $user->id)
+                            ->where('comment_id', $id)
+                            ->where("type",false)
+                            ->first();
+    
+        if ($alreadyLiked) {
+            $alreadyLiked->delete();
+            $comment->decrement('dislike_count');
+            return response()->json(["comment"=>$comment,'message' => false]);
 
-        // Increment the dislike count
+        }
+    
+        Like::create([
+            'user_id' => $user->id,
+            'comment_id' => $id,
+            'type'=> false
+        ]);
         $comment->increment('dislike_count');
 
-        // Return the updated comment
-        return response()->json(['comment' => $comment, 'status' => 'success']);
+    
+        return response()->json(['comment' => $comment, 'message' => true]);
     }
 }

@@ -1,11 +1,11 @@
 .profile-card {
-    max-width: 350px;
+    max-width: 500px;
     width: 50%;
     position: absolute;
     right: 0;
     z-index: 77;
     top: 0;
-    height: 60%;
+    height: 95%;
     padding: 25px;
     background-color: #fff;
     border-bottom-left-radius: 20px;
@@ -14,27 +14,135 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
   }
+/* 
+  .profile-avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 15px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: #c0392b;
+    margin: auto;
+  } */
   
-  .profile-avatar {
+  /* .profile-avatar {
+    position: absolute;
     width: 200px;
     height: 200px;
     border-radius: 50%;
     border: 4px solid #3498db;
     object-fit: cover;
-    margin-bottom: 15px;
+  } */
+
+  .profile-avatar-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .profile-avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid #4caf50;
+    object-fit: cover;
+    transition: opacity 0.2s;
+  }
+  
+  .profile-avatar-container:hover .profile-avatar {
+    opacity: 0.8;
+    border: 3px solid #2c3e50;
+  }
+  
+  .modifier-avatar {
+    display: none;
+  }
+  
+  .avatar-edit-icon{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 30%;
+    background-color: #3498db57;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    display: none;
+  }
+
+  .profile-avatar-container:hover .avatar-edit-icon {
+    display: flex;
   }
   
   .profile-name {
     font-size: 24px;
     font-weight: bold;
     color: #2c3e50;
-    margin: 10px 0 5px;
+    border: solid 3px #3498db;
+    width: fit-content;
+    margin: 10px auto 0 auto;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    padding: 0 0 0 10px;
+    overflow: hidden;
   }
-  
-  .profile-email {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 20px;
+
+  .btn-icon-edit{
+    margin-left: 10px;
+    color: #3498db;
+    font-size: 20px;
+    cursor: pointer;
+    background-color:#3498db;
+    object-fit: cover;
+    border: none;
+    outline: none;
+    margin: 0;
+    color: white;
+    padding: 10px;
+    border-radius: 0;
+  } 
+ 
+  .profile-phone-container,
+  .profile-email-container,
+  .profile-name-container,
+  .profile-password-container{
+    display: flex;
+    height: fit-content;
+    margin: 0 15px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .profile-email-container input,
+  .profile-phone-container input,
+  .profile-name-container input{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin: 0;
+  }
+
+  .profile-password-container {
+    margin: 15px;
+  }
+  p{
+    /* margin: 0; */
+    padding: 0;
+    font-size: 18px;
+    color: #2c3e50;
+    font-weight: 500;
+    text-align: left;
+    margin: 15px 15px 0 ;
   }
   
   .logout-button {
@@ -45,6 +153,38 @@
     border-radius: 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 20px;
+    left: 60%;
+  }
+
+  .btn-modifier{
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    bottom: 20px;
+    left: 20%;
+  }
+  .btn-password-edit{
+    background-color: transparent;
+    color: #3498db;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    cursor: pointer;
+    
+  }
+  .btn-password-edit:hover{
+    text-decoration: underline;
+  }
+  .btn-modifier:hover{
+    background-color: #2980b9;
   }
   
   .logout-button:hover {
@@ -62,4 +202,6 @@
     background-color: transparent;
     margin: 20px;
   }
+
+
   

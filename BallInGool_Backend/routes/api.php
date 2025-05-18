@@ -22,9 +22,12 @@ Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('updateUser', [\App\Http\Controllers\AutoController::class, 'updateUser'])->middleware("auth:sanctum");
 
 Route::post('/signUp', [\App\Http\Controllers\AutoController::class, 'signUp']);
 Route::post('/signIn', [\App\Http\Controllers\AutoController::class, 'signIn']);
@@ -35,12 +38,12 @@ Route::get('/news/{id}', fn($id) => \App\Models\News::find($id));
 Route::get("/allNews",fn() => \App\Models\News::orderBy("published_at","desc")->get());
 Route::get('/news/{id}/comments', [CommentController::class, 'index']);
 Route::post('/news/comments', [CommentController::class, 'store']);
-Route::put('/news/comments/{id}', [CommentController::class, 'update']);
+Route::put('/comments/{id}', [CommentController::class, 'update']);
 Route::delete('/news/comments/{id}', [CommentController::class, 'destroy']);
 Route::post('/comments/{id}/like', [CommentController::class, 'like'])->middleware("auth:sanctum");
 // Route::get('/news/comments/{id}/like', [CommentController::class, 'like']);
 // Route::get('/news/comments/{id}/dislike', [CommentController::class, 'dislike']);
-Route::post('/comments/{id}/dislike', [CommentController::class, 'dislikeComment']);
+Route::post('/comments/{id}/dislike', [CommentController::class, 'dislike'])->middleware("auth:sanctum");
 
 
 Route::get('/standings/{league}', function ($league) {
@@ -56,5 +59,9 @@ Route::get('/leagues', function () {
 
 Route::get("/products", function () {
     return \App\Models\Product::all();
+});
+
+Route::get("/teams", function () {
+    return \App\Models\Team::all();
 });
  

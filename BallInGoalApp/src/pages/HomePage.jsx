@@ -38,6 +38,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import SignUp from "./signUp/SignUp";
 import SignIn from "./SignIn/SignIn";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../slices/CartSlices";
+
 const HomePage = () => {
   const [news, setNews] = useState([]);
   const [error, seterror] = useState(null);
@@ -49,6 +52,8 @@ const HomePage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(""); // 'login' ou 'registrter'
+  const [team, setTeam] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   useEffect(() => {
     if (leagues.length > 0) {
@@ -106,6 +111,17 @@ const HomePage = () => {
     };
     fetchProducts();
   }, []);
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/teams");
+        setTeam(response.data);
+      } catch (err) {
+        seterror(err.message);
+      }
+    };
+    fetchTeams();
+  }, []);
 
   const shoppingContainerRef = useRef(null);
 
@@ -128,11 +144,14 @@ const HomePage = () => {
     setIsModalOpen(false);
   };
 
+
+  const dispatch = useDispatch();
+
   return (
     <>
       <Header
-        onOpenLogin={() => openModal("login")}
-        onOpenRegister={() => openModal("register")}
+      // onOpenLogin={() => openModal("login")}
+      // onOpenRegister={() => openModal("register")}
       />
       <div className="container">
         <div className="news">
@@ -152,31 +171,6 @@ const HomePage = () => {
                 </Link>
               </div>
             ))}
-            {isModalOpen && (
-              <div
-                className="modal-overlay"
-                onClick={() => setIsModalOpen(false)}
-              >
-                <div className="modal" onClick={(e) => e.stopPropagation()}>
-                  <button
-                    className="close-modal"
-                    onClick={() => setIsModalOpen(false)}
-                  >
-                    x
-                  </button>
-                  {modalType === "login" ? (
-                    <SignIn onClose={() => setIsModalOpen(false)} />
-                  ) : (
-                    <SignUp
-                      onClose={() => setIsModalOpen(false)}
-                      onSuccess={() => {
-                        console.log("Inscription reussie !");
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            )}
           </div>
         </div>
         <div className="live">
@@ -381,7 +375,10 @@ const HomePage = () => {
           </div>
         </div>
         {selectedProduct && (
-          <div className="overlay" onClick={() => setSelectedProduct(null)}>
+          <div
+            className="modal-overlay"
+            // onClick={() => setSelectedProduct(null)}
+          >
             <div className="modal">
               <button
                 onClick={() => setSelectedProduct(null)}
@@ -408,6 +405,13 @@ const HomePage = () => {
                   defaultValue="1"
                   min="1"
                   className="quantity-input"
+                  onChange={(e) => {
+                    const quantity = e.target.value;
+                    setSelectedProduct((prev) => ({
+                      ...prev,
+                      quantity: parseInt(quantity),
+                    }));
+                  }}
                 />
               </div>
 
@@ -421,7 +425,12 @@ const HomePage = () => {
               </select>
             </div> */}
 
-              <button className="add-to-cart-button">
+              <button className="add-to-cart-button"
+                onClick={() => {
+                  dispatch(addToCart(selectedProduct));
+                  setSelectedProduct(null);
+                }}
+              >
                 Ajouter au panier - {selectedProduct.price} $
               </button>
             </div>
@@ -570,7 +579,19 @@ const HomePage = () => {
         <div className="clubs">
           <h2>🏆 Clubs</h2>
           <div className="containerClubs">
-            <div className="clubsInfo">
+            {team.map((item) => (
+              <div
+                className="clubsInfo"
+                key={item.id}
+                onClick={() => setSelectedTeam(item)}
+              >
+                <div>
+                  <img src={item.logo} alt="" />
+                </div>
+                <h3>{item.name}</h3>
+              </div>
+            ))}
+            {/* <div className="clubsInfo">
               <div>
                 <img src={liverppolLogo} alt="" />
               </div>
@@ -610,7 +631,7 @@ const HomePage = () => {
                 <img src={manchesterUnitedLogo} alt="" />
               </div>
               <h3>Manchester United</h3>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

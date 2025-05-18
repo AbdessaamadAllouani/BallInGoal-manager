@@ -21,12 +21,20 @@ import profile from "../../assets/images/profile.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Profile from "../../components/profile/profile";
-const Header = ({ onOpenLogin, onOpenRegister }) => {
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons/faCartShopping";
+import SignUp from "../signUp/SignUp";
+import SignIn from "../SignIn/SignIn";
+import SoppingCart from "../../components/shoppingcart/SoppingCart";
+import "../../App.css";
+const Header = () => {
+
   const isAuthenticated = useAuth();
   const [user, setuser] = useState({});
   const [error, seterror] = useState("");
-  const [actived, setActived] = useState(false);
-
+  const [actived, setActived] = useState({profile: false, cart: false});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(""); // 'login' ou 'registrter'
+  const [cart, setCart] = useState([]);
   useEffect(() => {
     const fetchuser = async () => {
       const token = localStorage.getItem("token");
@@ -43,6 +51,15 @@ const Header = ({ onOpenLogin, onOpenRegister }) => {
     };
     fetchuser();
   }, [isAuthenticated]);
+
+  const openModal = (type) => {
+    setIsModalOpen(true);
+    setModalType(type);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <header className="header">
       <nav>
@@ -67,23 +84,44 @@ const Header = ({ onOpenLogin, onOpenRegister }) => {
           </Link>
         </div>
         <div className="helpIcon">
-          {isAuthenticated && <FontAwesomeIcon icon={faBell} />}
+          {isAuthenticated && (
+            <>
+              <FontAwesomeIcon icon={faBell} />
+              <FontAwesomeIcon
+                icon={faCartShopping}
+                style={{ cursor: "pointer" }}
+                onClick={() => setActived({...actived, cart: !actived.cart})}
+              />
+            </>
+          )}
           <FontAwesomeIcon icon={faCircleInfo} />
           <FontAwesomeIcon icon={faHeadset} />
           {isAuthenticated ? (
             <div
               className="profile"
-              onClick={() => setActived(true)}
+              onClick={() =>
+                setActived({ ...actived, profile: !actived.profile })
+              }
               style={{ cursor: "pointer" }}
             >
-              <img src={user.image ? `${user.image}` : profile} alt="profile" />
+              <img
+                src={
+                  user.image
+                    ? `http://localhost:8000/storage/${user.image}`
+                    : profile
+                }
+                alt="profile"
+              />
             </div>
           ) : (
             <>
-              <button className="connexion" onClick={onOpenLogin}>
+              <button className="connexion" onClick={() => openModal("login")}>
                 Connexion
               </button>
-              <button className="inscription" onClick={onOpenRegister}>
+              <button
+                className="inscription"
+                onClick={() => openModal("register")}
+              >
                 Inscription
               </button>
             </>
@@ -100,7 +138,30 @@ const Header = ({ onOpenLogin, onOpenRegister }) => {
           <Link to={"/CL"}>Clubs</Link>
         </div>
       </div>
-      {actived && <Profile user={user} setActived={setActived} />}
+      {actived.profile && <Profile user={user} setActived={setActived} />}
+      {actived.cart && <SoppingCart setActived={setActived} />}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-sign" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="close-modal"
+              onClick={() => setIsModalOpen(false)}
+            >
+              x
+            </button>
+            {modalType === "login" ? (
+              <SignIn onClose={() => setIsModalOpen(false)} />
+            ) : (
+              <SignUp
+                onClose={() => setIsModalOpen(false)}
+                onSuccess={() => {
+                  console.log("Inscription reussie !");
+                }}
+              />
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 };

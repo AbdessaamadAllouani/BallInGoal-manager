@@ -8,6 +8,7 @@ import useUser from "../../hook/useUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp as faThumbsUpRegular } from "@fortawesome/free-regular-svg-icons";
+import { comment } from "postcss";
 const NewsDetails = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
@@ -18,6 +19,10 @@ const NewsDetails = () => {
   const [loading, setLoading] = useState(true);
   const user = useUser();
   const [messageLike, setMessageLike] = useState(false);
+  const [typeButtonFunction, setTypeButtonFunction] = useState({
+    type: "ajouter",
+    comment_id: null,
+  });
 
   const fetchArticle = async () => {
     try {
@@ -94,7 +99,13 @@ const NewsDetails = () => {
   const handleDislike = async (commentId) => {
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/comments/${commentId}/dislike`
+        `http://127.0.0.1:8000/api/comments/${commentId}/dislike`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       setComments((prev) =>
         prev.map((comment) =>
@@ -123,15 +134,17 @@ const NewsDetails = () => {
     try {
       const response = await axios.put(
         `http://127.0.0.1:8000/api/comments/${commentId}`,
-        { text: newText }
+        { comment: newText }
       );
       setComments((prev) =>
         prev.map((comment) =>
           comment.id === commentId
-            ? { ...comment, text: response.data.text }
+            ? { ...comment, comment: response.data.comment.comment }
             : comment
         )
       );
+      setNewComment("");
+      setTypeButtonFunction("ajouter");
     } catch (err) {
       setError("Erreur lors de la modification du commentaire");
     }
@@ -168,9 +181,44 @@ const NewsDetails = () => {
                   .filter((comment) => comment.is_response === null)
                   .map((comment) => (
                     <div key={comment.id} className="comment">
-                      <p>
-                        <strong>{comment.user.name}</strong>: {comment.comment}
+                      <p style={{ display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            // marginRight: "10px",
+                            maxWidth: "60px",
+                            maxHeight: "60px",
+                            borderRadius: "50%",
+                            overflow: "hidden",
+                            backgroundColor: "gray",
+                            display: "inline-block",
+                            marginRight: "10px",
+                          }}
+                        >
+                          <img
+                            style={{
+                              objectFit: "cover",
+                              width: "100%",
+                              height: "100%",
+                            }}
+                            src={`http://127.0.0.1:8000/storage/${comment.user.image}`}
+                            alt=""
+                          />
+                        </div>
+                        <div
+                          style={{
+                            backgroundColor: "#e2e5e9",
+                            borderRadius: "6px",
+                            padding: "3px 10px",
+                          }}
+                        >
+                          <div style={{fontWeight:"bold",fontSize:"19px"}}>{comment.user.name}</div>
+                          {comment.comment}
+                        </div>
                       </p>
+                      {/* <p>{comment.created_at}</p> */}
+                      {comment.is_edited == 1 && (
+                        <p style={{ color: "gray" }}>Commentaire modifié</p>
+                      )}
                       <div className="reactions">
                         <button onClick={() => handleLike(comment.id)}>
                           {messageLike ? (
@@ -178,7 +226,7 @@ const NewsDetails = () => {
                           ) : (
                             <FontAwesomeIcon icon={faThumbsUpRegular} />
                           )}
-                          {" "+comment.like_count}
+                          {" " + comment.like_count}
                         </button>
                         <button onClick={() => handleDislike(comment.id)}>
                           👎 {comment.dislike_count}
@@ -187,11 +235,24 @@ const NewsDetails = () => {
                           ↩️ Répondre
                         </button>
                         {comment.user.id === user.id && (
-                          <button
-                            onClick={() => handleDeleteComment(comment.id)}
-                          >
-                            🗑️ Supprimer
-                          </button>
+                          <>
+                            <button
+                              onClick={() => handleDeleteComment(comment.id)}
+                            >
+                              🗑️ Supprimer
+                            </button>
+                            <button
+                              onClick={() => {
+                                setTypeButtonFunction({
+                                  type: "modifier",
+                                  comment_id: comment.id,
+                                });
+                                setNewComment(comment.comment);
+                              }}
+                            >
+                              ✏️ Modifier
+                            </button>
+                          </>
                         )}
                       </div>
 
@@ -241,7 +302,26 @@ const NewsDetails = () => {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                 />
-                <button onClick={handleAddComment}>Publier</button>
+                {typeButtonFunction.type === "modifier" ? (
+                  <button
+                    onClick={() =>
+                      handleEditComment(
+                        typeButtonFunction.comment_id,
+                        newComment
+                      )
+                    }
+                  >
+                    Modifier
+                  </button>
+                ) : (
+                  <button onClick={handleAddComment}>Ajouter</button>
+                )}
+                {/* <button onClick={handleAddComment}>Publier</button>
+                <button
+                  onClick={() => handleEditComment(comment.id, newComment)}
+                >
+                  Modifier
+                </button> */}
               </div>
             </div>
           </div>

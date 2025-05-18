@@ -19,7 +19,7 @@ class FetchFootballData extends Command
     public function handle()
     {
         // $this->fetchLeagues();
-        $this->fetchTeams();
+        // $this->fetchTeams();
         $this->fetchPlayers();
         $this->fetchMatches();
     }
@@ -112,15 +112,22 @@ class FetchFootballData extends Command
                 continue;
             }
 
+            // foreach ($response['response'] as $item) {
+            //     $photo = $item['player']['photo'] ?? 'no-photo';
+            //     $this->line("ID: {$item['player']['id']} - Name: {$item['player']['name']} - Photo: $photo");
+            // }
+            // exit;
+
             foreach ($response['response'] as $item) {
+                $photo = $item['player']['photo'] ?? 'no-photo';
                 Player::updateOrCreate(
                     ['api_id' => $item['player']['id']],
                     [
                         'name' => $item['player']['name'],
-                        'photo' => $item['player']['photo'],
+                        'photo' => $photo,
                         'team_id' => $team->id,
                     ]
-                );
+                );  
             }
             sleep(6);
             $this->info("Players for team '{$team->name}' imported.");
