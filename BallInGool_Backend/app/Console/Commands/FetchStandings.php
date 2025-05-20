@@ -21,7 +21,7 @@ class FetchStandings extends Command
 
         $this->info("⏳ Récupération des classements pour la saison $season...");
 
-        $leagues  = League::where('api_id', 140)->get();
+        $leagues  = League::all();
 
         foreach ($leagues as $league) {
             $this->info("📦 Traitement de la ligue: {$league->name} (ID: {$league->api_id})");

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('news', function (Blueprint $table) {
-            $table->text('content')->nullable()->after('description');
-            $table->string('author')->nullable()->after('content');
+            // $table->text('content')->nullable()->after('description');
+            // $table->string('author')->nullable()->after('content');
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('news', function (Blueprint $table) {
-            $table->dropColumn('content');
-            $table->dropColumn('author');
+            // $table->dropColumn('content');
+            // $table->dropColumn('author');
         });
     }
 };

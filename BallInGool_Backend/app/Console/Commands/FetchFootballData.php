@@ -18,50 +18,50 @@ class FetchFootballData extends Command
 
     public function handle()
     {
-        // $this->fetchLeagues();
+        $this->fetchLeagues();
         // $this->fetchTeams();
-        $this->fetchPlayers();
-        $this->fetchMatches();
+        // $this->fetchPlayers();
+        // $this->fetchMatches();
     }
 
     protected function fetchLeagues()
-{
-    $ids = [ 307];
+    {
+        $ids = [307, 1, 4, 9, 6, 14, 15, 2, 3, 848, 13, 21, 39, 140, 135, 78, 61, 71, 283, 94, 88];
 
-    foreach ($ids as $id) {
-        $response = Http::withHeaders([
-            'x-apisports-key' => '07abcdb4dfbc0ca9bfcb603091185b33',
-        ])->get('https://v3.football.api-sports.io/leagues', [
-            'id' => $id,
-        ]);
+        foreach ($ids as $id) {
+            $response = Http::withHeaders([
+                'x-apisports-key' => '07abcdb4dfbc0ca9bfcb603091185b33',
+            ])->get('https://v3.football.api-sports.io/leagues', [
+                'id' => $id,
+            ]);
 
-        if ($response->failed()) {
-            $this->error("Failed to fetch league with ID $id. Status: " . $response->status());
-            continue;
+            if ($response->failed()) {
+                $this->error("Failed to fetch league with ID $id. Status: " . $response->status());
+                continue;
+            }
+
+            $item = $response['response'][0] ?? null;
+
+            if (!$item) {
+                $this->warn("No league data found for ID $id.");
+                continue;
+            }
+
+            League::updateOrCreate(
+                ['api_id' => $item['league']['id']],
+                [
+                    'name' => $item['league']['name'],
+                    'country' => $item['country']['name'],
+                    'logo' => $item['league']['logo'],
+                ]
+            );
+
+            $this->info("League '{$item['league']['name']}' imported.");
+            sleep(6);
         }
 
-        $item = $response['response'][0] ?? null;
-
-        if (!$item) {
-            $this->warn("No league data found for ID $id.");
-            continue;
-        }
-
-        League::updateOrCreate(
-            ['api_id' => $item['league']['id']],
-            [
-                'name' => $item['league']['name'],
-                'country' => $item['country']['name'],
-                'logo' => $item['league']['logo'],
-            ]
-        );
-
-        $this->info("League '{$item['league']['name']}' imported.");
-        sleep(6);
+        $this->info("All leagues processed.");
     }
-
-    $this->info("All leagues processed.");
-}
 
 
     protected function fetchTeams()
@@ -69,15 +69,15 @@ class FetchFootballData extends Command
         $leagues = League::all();
 
         $response = Http::withHeaders([
-                'x-apisports-key' => '07abcdb4dfbc0ca9bfcb603091185b33',
-            ])->get("https://v3.football.api-sports.io/teams", [
-                'season' => 2023
-            ]);
+            'x-apisports-key' => '07abcdb4dfbc0ca9bfcb603091185b33',
+        ])->get("https://v3.football.api-sports.io/teams", [
+            'season' => 2023
+        ]);
 
-            if ($response->failed()) {
-                $this->error('Failed to fetch teams. Status: ' . $response->status());
-                return;
-            }
+        if ($response->failed()) {
+            $this->error('Failed to fetch teams. Status: ' . $response->status());
+            return;
+        }
 
         foreach ($leagues as $league) {
             foreach ($response['response'] as $item) {
@@ -93,7 +93,6 @@ class FetchFootballData extends Command
             $this->info("Teams for league '{$league->name}' imported.");
         }
         $this->info("Teams imported!");
-
     }
 
     protected function fetchPlayers()
@@ -127,7 +126,7 @@ class FetchFootballData extends Command
                         'photo' => $photo,
                         'team_id' => $team->id,
                     ]
-                );  
+                );
             }
             sleep(6);
             $this->info("Players for team '{$team->name}' imported.");

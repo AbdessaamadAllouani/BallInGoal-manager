@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('rank');
             $table->integer('points');
             $table->integer('goals_diff');
-            $table->integer('played');
             $table->integer('wins');
             $table->integer('draws');
             $table->integer('losses');
@@ -28,8 +27,8 @@ return new class extends Migration
             $table->string('league_name')->nullable();
             $table->string('league_logo')->nullable();
             $table->timestamps();
-        });
 
+        });
     }
 
     /**

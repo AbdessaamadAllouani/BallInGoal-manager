@@ -4,8 +4,12 @@ import { useNavigate } from "react-router-dom";
 import profile from "../../assets/images/profile.png";
 import "./profile.css";
 import { FiEdit2 } from "react-icons/fi";
+import useAuth from "../../hook/useUser";
 const Profile = ({ user, setActived }) => {
+  const [userinfo] = useState(user)
+  console.log(user)
   const [error, seterror] = useState();
+  const [showEditCard, setShowEditCard] = useState(false)
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [activeedit, setActiveEdit] = useState({
@@ -16,10 +20,10 @@ const Profile = ({ user, setActived }) => {
     password: false,
   });
   const [newUser, setNewUser] = useState({
-    image: user.image,
-    name: user.name,
-    email: user.email,
-    phone: user.telephone,
+    image: userinfo?.image,
+    name: userinfo?.name,
+    email: userinfo?.email,
+    phone: userinfo?.telephone,
     password: "",
     password_confirmation: "",
   });
@@ -59,14 +63,13 @@ const Profile = ({ user, setActived }) => {
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/updateUser",
-        formData,
+        {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
+      localStorage.removeItem("token");
+      navigate("/login");
 
       setNewUser({
         image: response.data.user.image,
@@ -77,151 +80,173 @@ const Profile = ({ user, setActived }) => {
         password_confirmation: "",
       });
     } catch (err) {
-      seterror(err.response?.data || err.message);
-      console.error(err.response?.data || err);
+      seterror(err.message);
     }
   };
-  
+
 
   const pathimg = `http://localhost:8000/storage/${newUser.image}`;
 
   return (
-    <div className="profile-card">
-      <button
-        className="close"
-        onClick={() => {
-          setActived(false);
-          location.reload();
-        }}
-      >
-        x
-      </button>
-      <div className="profile-avatar-container">
-        <label htmlFor="avatar-upload">
-          <img
-            className="profile-avatar"
-            src={newUser.image ? pathimg : profile}
-            alt="User avatar"
-          />
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          id="avatar-upload"
-          className="modifier-avatar"
-          onChange={(e) => {
-            setNewUser({ ...newUser, image: e.target.files[0] });
-            setActiveEdit({ ...activeedit, image: !activeedit.image });
-          }}
-        />
-        <span className="avatar-edit-icon">modifier</span>
-      </div>
-      <p>nom:</p>
-      <div className="profile-name-container">
-        <input
-          type="text"
-          className="modifier-name"
-          disabled={!activeedit.name}
-          onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-          value={newUser.name}
-        />
-        <button
-          className="btn-icon-edit"
-          onClick={() =>
-            setActiveEdit({ ...activeedit, name: !activeedit.name })
-          }
-        >
-          <FiEdit2 className="icon-edit" />
-        </button>{" "}
-      </div>
-      <p>email:</p>
-      <div className="profile-email-container">
-        <input
-          type="text"
-          className="modifier-email"
-          disabled={!activeedit.email}
-          onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-          value={newUser.email}
-        />
-        <button
-          className="btn-icon-edit"
-          onClick={() =>
-            setActiveEdit({ ...activeedit, email: !activeedit.email })
-          }
-        >
-          <FiEdit2 className="icon-edit" />
-        </button>{" "}
-      </div>
-      <p>telephone:</p>
-      <div className="profile-phone-container">
-        <input
-          type="text"
-          className="modifier-phone"
-          disabled={!activeedit.phone}
-          onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-          value={newUser.phone}
-        />
-        <button
-          className="btn-icon-edit"
-          onClick={() =>
-            setActiveEdit({ ...activeedit, phone: !activeedit.phone })
-          }
-        >
-          <FiEdit2 className="icon-edit" />
-        </button>
-      </div>
-      <button
-        onClick={() =>
-          setActiveEdit({ ...activeedit, password: !activeedit.password })
-        }
-        className="btn-password-edit"
-      >
-        {activeedit.password
-          ? "annuler le changement de mot de passe"
-          : "changer le mot de passe"}
-      </button>
-      <div
-        className="profile-password-container"
-        style={
-          activeedit.password ? { display: "block" } : { display: "none" }
-        }
-      >
-        <input
-          type="password"
-          className="modifier-password"
-          placeholder="nouveau mot de passe"
-          onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-          value={newUser.password}
-        />
-        <input
-          type="password"
-          className="modifier-password"
-          placeholder="confirmer le mot de passe"
-          onChange={(e) =>
-            setNewUser({ ...newUser, password_confirmation: e.target.value })
-          }
-          value={newUser.password_confirmation}
-        />
+    <>
+      <div className="first-profile-card">
+        <div>
+          <h2>Profil</h2>
+          <div id="info-user">
+            <label htmlFor="avatar">
+              <img
+                className="profile-avatar"
+                src={newUser.image ? pathimg : profile}
+                alt="User avatar"
+              />
+            </label>
+            <div className="name-email">
+              <div className="name">{user.name}</div>
+              <div className="email">{user.email}</div>
+            </div>
+          </div>
         </div>
-      <button
-        className="btn-modifier"
-        style={
-          activeedit.email ||
-          activeedit.name ||
-          activeedit.phone ||
-          activeedit.image ||
-          activeedit.password
-            ? { display: "block" }
-            : { display: "none" }
-        }
-        onClick={(e) => handleEdit(e)}
-      >
-        valider les modification
-      </button>
-      <button className="logout-button" onClick={(e) => onLogout(e)}>
-        Déconnexion
-      </button>
-    </div>
+        <div id="control-btns">
+          <button className="modify-button" onClick={() => { setShowEditCard(true) }}>Modifier</button>
+          <button className="logout-button" onClick={(e) => onLogout(e)}>
+            Se déconnecter
+          </button>
+        </div>
+      </div>
+      {showEditCard && (<div className="profile-card">
+          <button
+            className="close"
+            onClick={() => {
+              setActived(false);
+              setShowEditCard(false);
+            }}
+          >
+            ×
+          </button>
+          <div className="profile-avatar-container">
+            <label htmlFor="avatar-upload">
+              <img
+                className="profile-avatar"
+                src={newUser.image ? pathimg : profile}
+                alt="User avatar"
+              />
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              id="avatar-upload"
+              className="modifier-avatar"
+              onChange={(e) => {
+                setNewUser({ ...newUser, image: e.target.files[0] });
+                setActiveEdit({ ...activeedit, image: !activeedit.image });
+              }}
+            />
+            <span className="avatar-edit-icon">modifier</span>
+          </div>
+        <p>nom</p>
+        <div className="profile-name-container">
+          <input
+            type="text"
+            className="modifier-name"
+            disabled={!activeedit.name}
+            onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+            value={newUser.name}
+          />
+          <button
+            className="btn-icon-edit"
+            onClick={() =>
+              setActiveEdit({ ...activeedit, name: !activeedit.name })
+            }
+          >
+            <FiEdit2 className="icon-edit" />
+          </button>{" "}
+        </div>
+        <p>email</p>
+        <div className="profile-email-container">
+          <input
+            type="text"
+            className="modifier-email"
+            disabled={!activeedit.email}
+            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            value={newUser.email}
+          />
+          <button
+            className="btn-icon-edit"
+            onClick={() =>
+              setActiveEdit({ ...activeedit, email: !activeedit.email })
+            }
+          >
+            <FiEdit2 className="icon-edit" />
+          </button>{" "}
+        </div>
+        <p>telephone</p>
+        <div className="profile-phone-container">
+          <input
+            type="text"
+            className="modifier-phone"
+            disabled={!activeedit.phone}
+            onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
+            value={newUser.phone}
+          />
+          <button
+            className="btn-icon-edit"
+            onClick={() =>
+              setActiveEdit({ ...activeedit, phone: !activeedit.phone })
+            }
+          >
+            <FiEdit2 className="icon-edit" />
+          </button>
+        </div>
+        <button
+          onClick={() =>
+            setActiveEdit({ ...activeedit, password: !activeedit.password })
+          }
+          className="btn-password-edit"
+        >
+          {activeedit.password
+            ? "annuler le changement de mot de passe"
+            : "changer le mot de passe"}
+        </button>
+        <div
+          className="profile-password-container"
+          style={
+            activeedit.password ? { display: "block" } : { display: "none" }
+          }
+        >
+          <input
+            type="password"
+            className="modifier-password"
+            placeholder="nouveau mot de passe"
+            onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+            value={newUser.password}
+          />
+          <input
+            type="password"
+            className="modifier-password"
+            placeholder="confirmer le mot de passe"
+            onChange={(e) =>
+              setNewUser({ ...newUser, password_confirmation: e.target.value })
+            }
+            value={newUser.password_confirmation}
+          />
+        </div>
+        <button
+          className="btn-modifier"
+          style={
+            activeedit.email ||
+              activeedit.name ||
+              activeedit.phone ||
+              activeedit.image ||
+              activeedit.password
+              ? { display: "block" }
+              : { display: "none" }
+          }
+          onClick={(e) => handleEdit(e)}
+        >
+          valider les modification
+        </button>
+      </div>)}
+    </>
   );
 };
 
