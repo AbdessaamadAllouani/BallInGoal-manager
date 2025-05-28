@@ -1,10 +1,11 @@
 import {
-  BrowserRouter,
+  BrowserRouter as Router,
   Routes,
   Route,
   Outlet,
   Navigate,
 } from "react-router-dom";
+
 import "./App.css";
 import HomePage from "./pages/HomePage";
 import LivePage from "./pages/livePage/LivePage";
@@ -24,16 +25,21 @@ const PrivateRoute = ({ roleRequired }) => {
   const { user, loading } = useAuth();
 
   if (loading) return <Loader />;
+
+  // Redirige si non authentifié
   if (!user) return <Navigate to="/" replace />;
-  if (roleRequired && user.role !== roleRequired)
-    return <Navigate to="/" replace />;
+
+  // Redirige si mauvais rôle
+  if (roleRequired && user.role !== roleRequired) {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
   return <Outlet />;
 };
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
@@ -54,11 +60,16 @@ function App() {
         {/* Protected Routes */}
         <Route element={<PrivateRoute roleRequired="admin" />}>
           <Route path="/admin" element={<AdminPage />} />
+        </Route>
+
+        <Route element={<PrivateRoute roleRequired="league" />}>
           <Route path="/Competition" element={<CreateCompetition />} />
           <Route path="/ListCompetition" element={<CompetitionsList />} />
         </Route>
+
+        <Route element={<PrivateRoute roleRequired="team" />}></Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

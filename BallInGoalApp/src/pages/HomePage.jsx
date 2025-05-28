@@ -6,7 +6,6 @@ import axios from "axios";
 import Header from "./includes/Header";
 import Footer from "./includes/Footer";
 import "./HomePage.css";
-import { BrowserRouter } from "react-router-dom";
 import marocLogo from "../assets/images/marocLogo.webp";
 import espanLogo from "../assets/images/espanLogo.webp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +29,6 @@ const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(""); // 'login' ou 'registrter'
   const [team, setTeam] = useState([]);
-  const [selectedTeam, setSelectedTeam] = useState(null);
   const [standings, setstandings] = useState([]);
   const [leagues, setLeagues] = useState([]);
   const [selectedLeagueId, setSelectedLeagueId] = useState(1);
@@ -581,10 +579,7 @@ const HomePage = () => {
           <div className="containerClubs">
             {team.map((item) => (
               <Link to={`/Statistique-Club/${item.id}`} key={item.id}>
-                <div
-                  className="clubsInfo"
-                  onClick={() => setSelectedTeam(item)}
-                >
+                <div className="clubsInfo">
                   <div>
                     <img src={item.logo} alt="" />
                   </div>
