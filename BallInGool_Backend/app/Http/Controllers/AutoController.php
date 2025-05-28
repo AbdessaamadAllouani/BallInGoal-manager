@@ -15,6 +15,7 @@ class AutoController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'telephone' => 'required|string|max:15',
             'password' => 'required|string|min:8|confirmed',
+            'userType' => 'required|in:admin,user,league,team',
         ]);
 
         $user = User::create([
@@ -22,9 +23,14 @@ class AutoController extends Controller
             'email' => $request->email,
             'telephone' => $request->telephone,
             'password' => bcrypt($request->password),
+            'role' => $request->userType,
+            'image' => $request->image ? $request->file('image')->store('images', 'public') : null,
+            'role' => $request->userType,
         ]);
 
-        return response()->json(['user' => $user], 201);
+        $token = $user->createToken('Personal Access Token')->plainTextToken;
+
+        return response()->json(['user' => $user,"token"=>$token], 201);
     }
     public function signIn(Request $request)
     {

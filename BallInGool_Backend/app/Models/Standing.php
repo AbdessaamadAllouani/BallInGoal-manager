@@ -23,7 +23,8 @@ class Standing extends Model
         'team_logo',
         'league_name',
         'league_logo',
-        "form"
+        "form",
+        "group_name",
 
     ];
 }

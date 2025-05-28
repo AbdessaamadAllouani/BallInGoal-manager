@@ -6,10 +6,11 @@ import { Await } from "react-router-dom";
 export default function SignUp({ onClose }) {
   // const [userType, setUserType] = useState("user");
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("")
+  const [name, setName] = useState("");
   const [telephone, setTelephone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [userType, setUserType] = useState("user");
   const [error, setError] = useState(null);
   const [user, setUser] = useState({});
 
@@ -21,9 +22,12 @@ export default function SignUp({ onClose }) {
         email,
         telephone,
         password,
-        password_confirmation : confirmPassword,
+        password_confirmation: confirmPassword,
+        userType,
       });
       setUser(response.data.user);
+      localStorage.setItem("token", response.data.token);
+      window.location.reload();
     } catch (err) {
       setError(err.message);
     }
@@ -33,9 +37,17 @@ export default function SignUp({ onClose }) {
     <React.Fragment>
       <span className="form-title">Créer un compte</span>
       <form>
-        <select name="userType" id="userType">
+        <select
+          name="userType"
+          id="userType"
+          onChange={(e) => setUserType(e.target.value)}
+          value={userType}
+          required
+        >
           <option value="user">Utilisateur</option>
           <option value="admin">Administrateur</option>
+          <option value="league">Gistion de Competition</option>
+          <option value="team">Gistion de Club</option>
         </select>
         <input
           type="text"
@@ -86,12 +98,12 @@ export default function SignUp({ onClose }) {
           <button type="submit" onClick={(e) => handleSubmit(e)}>
             Continuer
           </button>
-          <div className="google-sign">
-            <img className="glogo" src={glogo} alt="Google logo" />
-            <a href="http://localhost:8000/api/auth/google/redirect">
+          <a href="http://localhost:8000/api/auth/google/redirect">
+            <div className="google-sign">
+              <img className="glogo" src={glogo} alt="Google logo" />
               S'inscrire avec Google
-            </a>
-          </div>
+            </div>
+          </a>
         </div>
       </form>
     </React.Fragment>

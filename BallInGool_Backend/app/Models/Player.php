@@ -11,7 +11,20 @@ class Player extends Model
     protected $fillable = [
         'api_id',
         'team_id',
+        'photo',
         'name',
         'age',];
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function topScorers()
+    {
+        return $this->hasMany(TopScorer::class, 'player_id');
+    }
+
+    
         
 }

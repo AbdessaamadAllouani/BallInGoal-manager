@@ -63,7 +63,7 @@ const Header = () => {
   return (
     <header className="header">
       <nav>
-        <img style={{ width: "20px" }} src={listicon} alt="" />
+        {/* <img style={{ width: "20px" }} src={listicon} alt="" /> */}
         <img src={logoBallInGool} alt="logo" />
         <div className="princpalLink">
           <Link to={"/"}>
@@ -74,7 +74,7 @@ const Header = () => {
             {" "}
             <FontAwesomeIcon icon={faVideo} /> Diffusion en direct
           </Link>
-          <Link to={"/C"}>
+          <Link to={"/ClassementStatistique"}>
             {" "}
             <FontAwesomeIcon icon={faChartBar} />
             Classement & Statistique
@@ -82,6 +82,16 @@ const Header = () => {
           <Link to={"/news"}>
             <FontAwesomeIcon icon={faNewspaper} /> Nouvelles
           </Link>
+          {user.role === "admin" && (
+            <Link to={"/admin"}>
+              <FontAwesomeIcon icon={faLeaf} /> Admin
+            </Link>
+          )}
+          {user.role === "league" && (
+            <Link to={"/Competition"}>
+              <FontAwesomeIcon icon={faLeaf} /> Competition
+            </Link>
+          )}
         </div>
         <div className="helpIcon">
           {isAuthenticated && (
@@ -90,7 +100,7 @@ const Header = () => {
               <FontAwesomeIcon
                 icon={faCartShopping}
                 style={{ cursor: "pointer" }}
-                onClick={() => setActived({...actived, cart: !actived.cart})}
+                onClick={() => setActived({ ...actived, cart: !actived.cart })}
               />
             </>
           )}
@@ -128,16 +138,16 @@ const Header = () => {
           )}
         </div>
       </nav>
-      <div className="searchBar">
+      {/* <div className="searchBar">
         {/* <span>
           <FontAwesomeIcon className="search" icon={faSearch} />
           <input type="text" placeholder="recherche..." />
         </span> */}
-        <div>
+        {/* <div>
           <Link to={"/CM"}>Competition</Link>
           <Link to={"/CL"}>Clubs</Link>
         </div>
-      </div>
+      </div>  */}
       {actived.profile && <Profile user={user} setActived={setActived} />}
       {actived.cart && <SoppingCart setActived={setActived} />}
       {isModalOpen && (

@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class LeagueStats extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
-        'description',
-        'price',
-        'image',
-        'stock',
-        
-    ];  
+        'league_id',
+        'total_goals',
+        'yellow_cards',
+        'red_cards',
+        'most_offensive_team',
+    ];
 }

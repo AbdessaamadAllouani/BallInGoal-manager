@@ -160,7 +160,14 @@ const NewsDetails = () => {
         {article && (
           <div className="news-details">
             <h1>{article.title}</h1>
-            <img src={article.image} alt={article.title} />
+            <img
+              src={
+                article.image.includes("https")
+                  ? article.image
+                  : `http://localhost:8000/Storage/${article.image}`
+              }
+              alt={article.title}
+            />
             <h5>{article.source}</h5>
             <h3>{article.description}</h3>
             <p>{article.content}</p>
@@ -211,7 +218,9 @@ const NewsDetails = () => {
                             padding: "3px 10px",
                           }}
                         >
-                          <div style={{fontWeight:"bold",fontSize:"19px"}}>{comment.user.name}</div>
+                          <div style={{ fontWeight: "bold", fontSize: "19px" }}>
+                            {comment.user.name}
+                          </div>
                           {comment.comment}
                         </div>
                       </p>

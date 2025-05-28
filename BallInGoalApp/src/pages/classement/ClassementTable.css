@@ -1,0 +1,41 @@
+.fade-slide-enter {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  
+  .fade-slide-enter-active {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .fade-slide-exit {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  
+  .fade-slide-exit-active {
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .groupControl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .groupControl button {
+    font-size: 1.2rem;
+    padding: 4px 10px;
+    background: #eee;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .groupControl button:hover {
+    background: #ddd;
+  }
+  

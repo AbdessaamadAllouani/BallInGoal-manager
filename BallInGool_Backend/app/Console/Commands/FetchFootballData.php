@@ -20,8 +20,10 @@ class FetchFootballData extends Command
     {
         // $this->fetchLeagues();
         // $this->fetchTeams();
-        $this->fetchPlayers();
-        $this->fetchMatches();
+        // $this->fetchPlayers();
+        // $this->fetchMatches();
+        $this->fetchLeagueStats();
+        $this->fetchTopScorers();
     }
 
     protected function fetchLeagues()
@@ -175,4 +177,129 @@ class FetchFootballData extends Command
         }
         $this->info("Matches imported!");
     }
+
+    protected function fetchTopScorers()
+{
+    $leagues = League::all();
+
+    foreach ($leagues as $league) {
+        $response = Http::withHeaders([
+            'x-apisports-key' => '07abcdb4dfbc0ca9bfcb603091185b33',
+        ])->get("https://v3.football.api-sports.io/players/topscorers", [
+            'league' => $league->api_id,
+            'season' => 2023
+        ]);
+
+        if ($response->failed()) {
+            $this->error("Failed to fetch top scorers for {$league->name}");
+            continue;
+        }
+
+        foreach (array_slice($response['response'], 0, 5) as $item) {
+            $playerApiId = $item['player']['id'];
+            $player = Player::where('api_id', $playerApiId)->first();
+            $team = Team::where('api_id', $item['statistics'][0]['team']['id'])->first();
+
+            if ($player && $team) {
+                \App\Models\TopScorer::updateOrCreate(
+                    ['player_id' => $player->id],
+                    [
+                        'team_id' => $team->id,
+                        'league_id' => $league->id,
+                        'goals' => $item['statistics'][0]['goals']['total'] ?? 0
+                    ]
+                );
+            }
+        }
+
+        $this->info("Top 5 scorers for {$league->name} imported.");
+        sleep(6);
+    }
+}
+
+protected function fetchLeagueStats()
+{
+    $leagues = League::all();
+
+    foreach ($leagues as $league) {
+        $response = Http::withHeaders([
+            'x-apisports-key' => '07abcdb4dfbc0ca9bfcb603091185b33',
+        ])->retry(3, 1000) // يعيد المحاولة 3 مرات بفاصل 1 ثانية إذا فشل
+          ->get('https://v3.football.api-sports.io/fixtures', [
+              'league' => $league->api_id,
+              'season' => 2023
+          ]);
+
+        if (!$response->successful() || !isset($response['response'])) {
+            $this->error("Failed to fetch fixtures for league {$league->name}");
+            continue;
+        }
+
+        $fixtures = $response['response'];
+        $totalGoals = 0;
+        $yellow = 0;
+        $red = 0;
+        $teamGoals = [];
+
+        foreach ($fixtures as $match) {
+            // تأكد من وجود بيانات الأهداف
+            $homeGoals = $match['goals']['home'] ?? 0;
+            $awayGoals = $match['goals']['away'] ?? 0;
+
+            $totalGoals += $homeGoals + $awayGoals;
+
+            // حساب أهداف كل فريق
+            foreach (['home', 'away'] as $side) {
+                if (isset($match['teams'][$side])) {
+                    $teamId = $match['teams'][$side]['id'] ?? null;
+                    $goals = $match['goals'][$side] ?? 0;
+                    if ($teamId !== null) {
+                        if (!isset($teamGoals[$teamId])) {
+                            $teamGoals[$teamId] = 0;
+                        }
+                        $teamGoals[$teamId] += $goals;
+                    }
+                }
+            }
+
+            // حساب البطاقات
+            if (isset($match['players']) && is_array($match['players'])) {
+                foreach ($match['players'] as $teamPlayers) {
+                    if (isset($teamPlayers['players']) && is_array($teamPlayers['players'])) {
+                        foreach ($teamPlayers['players'] as $player) {
+                            if (isset($player['statistics']) && is_array($player['statistics'])) {
+                                foreach ($player['statistics'] as $stat) {
+                                    $yellow += $stat['cards']['yellow'] ?? 0;
+                                    $red += $stat['cards']['red'] ?? 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // إيجاد الفريق الأكثر هجومًا
+        arsort($teamGoals);
+        $topTeamApiId = array_key_first($teamGoals) ?: null;
+        $topTeamName = null;
+        if ($topTeamApiId) {
+            $topTeamName = Team::where('api_id', $topTeamApiId)->value('name');
+        }
+
+        \App\Models\LeagueStats::updateOrCreate(
+            ['league_id' => $league->id],
+            [
+                'total_goals' => $totalGoals,
+                'yellow_cards' => $yellow,
+                'red_cards' => $red,
+                'most_offensive_team' => $topTeamName
+            ]
+        );
+
+        $this->info("Stats for league {$league->name} imported.");
+        sleep(6); // مراعاة حدود API
+    }
+}
+
 }

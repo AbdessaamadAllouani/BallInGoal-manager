@@ -21,7 +21,7 @@ class FetchStandings extends Command
 
         $this->info("⏳ Récupération des classements pour la saison $season...");
 
-        $leagues  = League::where('api_id', 140)->get();
+        $leagues  = League::where('api_id',"!=", 1)->get();
 
         foreach ($leagues as $league) {
             $this->info("📦 Traitement de la ligue: {$league->name} (ID: {$league->api_id})");
@@ -46,41 +46,45 @@ class FetchStandings extends Command
                 continue;
             }
 
-            $standings = $response['response'][0]['league']['standings'][0];
+            $allGroups = $response['response'][0]['league']['standings'] ?? [];
 
-            foreach ($standings as $row) {
-
-                if(!Team::where('api_id', $row['team']['id'])->exists()){
-                    Team::create([
-                        'api_id' => $row['team']['id'],
-                        'name' => $row['team']['name'],
-                        'logo' => $row['team']['logo'],
-                    ]);
+            foreach ($allGroups as $group) {
+                $groupName = $group[0]['group'] ?? null; // اسم المجموعة
+            
+                foreach ($group as $row) {
+                    if (!Team::where('api_id', $row['team']['id'])->exists()) {
+                        Team::create([
+                            'api_id' => $row['team']['id'],
+                            'name' => $row['team']['name'],
+                            'logo' => $row['team']['logo'],
+                        ]);
+                    }
+            
+                    Standing::updateOrCreate(
+                        [
+                            'team_id' => Team::where('api_id', $row['team']['id'])->first()->id,
+                            'league_id' => $league->id,
+                            'season' => $season,
+                        ],
+                        [
+                            'rank' => $row['rank'],
+                            'team_name' => $row['team']['name'],
+                            'points' => $row['points'],
+                            'played' => $row['all']['played'],
+                            'wins' => $row['all']['win'],
+                            'draws' => $row['all']['draw'],
+                            'losses' => $row['all']['lose'],
+                            'goals_diff' => $row['goalsDiff'],
+                            'team_logo' => $row['team']['logo'] ?? null,
+                            'league_name' => $response['response'][0]['league']['name'] ?? null,
+                            'league_logo' => $response['response'][0]['league']['logo'] ?? null,
+                            'form' => $row['form'] ?? null,
+                            'group_name' => $groupName,
+                        ]
+                    );
+                }
             }
-                Standing::updateOrCreate(
-                    [
-                        'team_id' => Team::where('api_id', $row['team']['id'])->first()->id,
-                        'league_id' => $league->id,
-                        'season' => $season,
-                    ],
-                    [
-                        'rank' => $row['rank'],
-                        'team_name' => $row['team']['name'],
-                        'points' => $row['points'],
-                        'played' => $row['all']['played'],
-                        'wins' => $row['all']['win'],
-                        'draws' => $row['all']['draw'],
-                        'losses' => $row['all']['lose'],
-                        'goals_diff' => $row['goalsDiff'],
-                        'team_logo' => $row['team']['logo'] ?? null,
-                        'league_name' => $response['response'][0]['league']['name'] ?? null,
-                        'league_logo' => $response['response'][0]['league']['logo'] ?? null,
-                        'form' => $row['form'] ?? null,
-                    ]
-                );
-                
-            }
-
+            
             $this->info("✅ Classement enregistré pour la ligue: {$league->name}");
         }
 

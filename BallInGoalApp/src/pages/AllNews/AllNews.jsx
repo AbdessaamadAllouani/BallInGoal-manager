@@ -34,7 +34,14 @@ const AllNews = () => {
               to={`/news/${item.id}`}
               className={`news-card ${index % 10 === 0 ? "featured" : ""}`}
             >
-              <img src={item.image} alt={item.title} />
+              <img
+                src={
+                  item.image.includes("https")
+                    ? item.image
+                    : `http://localhost:8000/Storage/${item.image}`
+                }
+                alt={item.title}
+              />
               <div className="news-content">
                 <h3>{item.title}</h3>
                 <p>{item.source}</p>

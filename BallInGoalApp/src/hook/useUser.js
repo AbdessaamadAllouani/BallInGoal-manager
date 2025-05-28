@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 export default function useAuth() {
   const [user, setuser] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -17,13 +18,15 @@ export default function useAuth() {
                 }
                 )
             setuser(responce.data);
+            setLoading(false);
         }
         catch (error) {
             console.error("Error fetching user data:", error);
+            setLoading(false)
         }
     }
     fetchUser();
   }, []);
 
-  return user;
+  return { user, loading };
 }

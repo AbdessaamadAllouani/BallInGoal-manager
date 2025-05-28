@@ -7,28 +7,8 @@ import Header from "./includes/Header";
 import Footer from "./includes/Footer";
 import "./HomePage.css";
 import { BrowserRouter } from "react-router-dom";
-import newsimg1 from "../assets/images/newsimg1.webp";
-import newsimg2 from "../assets/images/newsimg2.jpg";
-import newsimg3 from "../assets/images/newsimg3.png";
-import newsimg from "../assets/images/newsimg.jpg";
-import newsimg4 from "../assets/images/newsimg4.jpg";
 import marocLogo from "../assets/images/marocLogo.webp";
 import espanLogo from "../assets/images/espanLogo.webp";
-import barcelona from "../assets/images/barcelona.png";
-import real from "../assets/images/real.png";
-import chelsea from "../assets/images/chelsea.webp";
-import city from "../assets/images/city.png";
-import raja from "../assets/images/raja.png";
-import jsk from "../assets/images/jsk.png";
-import england from "../assets/images/england.png";
-import maroctuni from "../assets/images/maroctuni.png";
-import league from "../assets/images/league.png";
-import liverppolLogo from "../assets/images/liverppollogo.jpg";
-import manchesterSityLogo from "../assets/images/manchestercitylogo.png";
-import arsenalLogo from "../assets/images/arsenallogo.png";
-import chelseaLogo from "../assets/images/chelsealogo.png";
-import westHamLogo from "../assets/images/westhamlogo.png";
-import manchesterUnitedLogo from "../assets/images/manchesterunitedlogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -40,26 +20,20 @@ import SignUp from "./signUp/SignUp";
 import SignIn from "./SignIn/SignIn";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../slices/CartSlices";
+import ClassementTable from "./classement/ClassementTable";
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
   const [error, seterror] = useState(null);
-  const [standings, setstandings] = useState([]);
-  const [leagues, setLeagues] = useState([]);
-  const furstLeagueId = leagues?.[0]?.id || null; // ID de la ligue par défaut
-  const [selectedLeagueId, setSelectedLeagueId] = useState(1);
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(""); // 'login' ou 'registrter'
   const [team, setTeam] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
-
-  useEffect(() => {
-    if (leagues.length > 0) {
-      setSelectedLeagueId(furstLeagueId); // Définit la ligue par défaut lors du premier rendu
-    }
-  }, [leagues]);
+  const [standings, setstandings] = useState([]);
+  const [leagues, setLeagues] = useState([]);
+  const [selectedLeagueId, setSelectedLeagueId] = useState(1);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -79,6 +53,9 @@ const HomePage = () => {
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/leagues");
         setLeagues(response.data);
+        // if (response.data.length > 0) {
+        //   setSelectedLeagueId(response.data[0].id);
+        // }
       } catch (err) {
         seterror(err.message);
       }
@@ -144,7 +121,6 @@ const HomePage = () => {
     setIsModalOpen(false);
   };
 
-
   const dispatch = useDispatch();
 
   return (
@@ -162,7 +138,14 @@ const HomePage = () => {
               <div key={item.id}>
                 <Link to={`/news/${item.id}`} key={item.id}>
                   <div className="newsimg">
-                    <img src={item.image} alt="" />
+                    <img
+                      src={
+                        item.image.includes("https")
+                          ? item.image
+                          : `http://localhost:8000/Storage/${item.image}`
+                      }
+                      alt=""
+                    />
                   </div>
 
                   <h5>{item.source}</h5>
@@ -279,7 +262,12 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div className="statistics">
+
+        {/* <div className="statistics">
+        {standings.length === 0 ? (
+          <p>Chargement du classement...</p>
+        ) : (
+          <>
           <h2>🏆 Classement & Statistique</h2>
           <div className="containerStatistics">
             <div className="filter">
@@ -373,7 +361,17 @@ const HomePage = () => {
               <p>Aucun classement disponible pour cette ligue.</p>
             )}
           </div>
-        </div>
+          </>
+           )}
+        </div> */}
+
+        <ClassementTable
+          standings={standings}
+          leagues={leagues}
+          selectedLeagueId={selectedLeagueId}
+          setSelectedLeagueId={setSelectedLeagueId}
+        />
+
         {selectedProduct && (
           <div
             className="modal-overlay"
@@ -425,7 +423,8 @@ const HomePage = () => {
               </select>
             </div> */}
 
-              <button className="add-to-cart-button"
+              <button
+                className="add-to-cart-button"
                 onClick={() => {
                   dispatch(addToCart(selectedProduct));
                   setSelectedProduct(null);
@@ -578,60 +577,21 @@ const HomePage = () => {
         </div>
         <div className="clubs">
           <h2>🏆 Clubs</h2>
+
           <div className="containerClubs">
             {team.map((item) => (
-              <div
-                className="clubsInfo"
-                key={item.id}
-                onClick={() => setSelectedTeam(item)}
-              >
-                <div>
-                  <img src={item.logo} alt="" />
+              <Link to={`/Statistique-Club/${item.id}`} key={item.id}>
+                <div
+                  className="clubsInfo"
+                  onClick={() => setSelectedTeam(item)}
+                >
+                  <div>
+                    <img src={item.logo} alt="" />
+                  </div>
+                  <h3>{item.name}</h3>
                 </div>
-                <h3>{item.name}</h3>
-              </div>
+              </Link>
             ))}
-            {/* <div className="clubsInfo">
-              <div>
-                <img src={liverppolLogo} alt="" />
-              </div>
-              <h3>Liverpool</h3>
-            </div>
-
-            <div className="clubsInfo">
-              <div>
-                <img src={manchesterSityLogo} alt="" />
-              </div>
-              <h3>Manchester City</h3>
-            </div>
-
-            <div className="clubsInfo">
-              <div>
-                <img src={arsenalLogo} alt="" />
-              </div>
-              <h3>Arsenal</h3>
-            </div>
-
-            <div className="clubsInfo">
-              <div>
-                <img src={chelseaLogo} alt="" />
-              </div>
-              <h3>Chelsea</h3>
-            </div>
-
-            <div className="clubsInfo">
-              <div>
-                <img src={westHamLogo} alt="" />
-              </div>
-              <h3>West Ham</h3>
-            </div>
-
-            <div className="clubsInfo">
-              <div>
-                <img src={manchesterUnitedLogo} alt="" />
-              </div>
-              <h3>Manchester United</h3>
-            </div> */}
           </div>
         </div>
       </div>
